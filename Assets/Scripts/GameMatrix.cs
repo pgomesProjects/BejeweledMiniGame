@@ -5,7 +5,9 @@ using UnityEngine;
 public class GameMatrix : MonoBehaviour
 {
     [SerializeField] private GameObject[] gridPieceRows;
+    [SerializeField] private GameObject gemHolder;
     private GridPieceEvent[,] gridPieceEvents;
+    private Gem[,] gemObjects;
 
     public static GameMatrix main;
 
@@ -19,10 +21,10 @@ public class GameMatrix : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        InitializeArray();
+        InitializeGridEventsArray();
     }
 
-    private void InitializeArray()
+    private void InitializeGridEventsArray()
     {
         gridPieceEvents = new GridPieceEvent[gridPieceRows.Length, gridPieceRows.Length];
         for(int row = 0; row < gridPieceRows.Length; row++)
@@ -31,6 +33,19 @@ public class GameMatrix : MonoBehaviour
             for(int col = 0; col < currentRow.Length; col++)
             {
                 gridPieceEvents[row, col] = currentRow[col];
+            }
+        }
+    }
+
+    public void InitializeGemArray()
+    {
+        gemObjects = new Gem[gridPieceRows.Length, gridPieceRows.Length];
+        Gem[] gemPieces = gemHolder.GetComponentsInChildren<Gem>();
+        for (int row = 0; row < gridPieceRows.Length; row++)
+        {
+            for (int col = 0; col < gridPieceRows.Length; col++)
+            {
+                gemObjects[row, col] = gemPieces[(row * gridPieceRows.Length) + col];
             }
         }
     }

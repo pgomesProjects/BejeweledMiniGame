@@ -36,6 +36,7 @@ public class GemSpawnerManager : MonoBehaviour
             }
             yield return new WaitForSeconds(0.5f);
         }
+        GameMatrix.main.InitializeGemArray();
     }
 
     public void CheckForReset()
