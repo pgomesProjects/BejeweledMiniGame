@@ -43,5 +43,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c6ec1e0914909f41a1231b3f5a251b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gemPrefab: {fileID: 389322766710984205, guid: 78f565e309c54fa4c8ae0a79fc1f3476, type: 3}
+  gemPrefabs:
+  - {fileID: 389322766710984205, guid: 78f565e309c54fa4c8ae0a79fc1f3476, type: 3}
+  - {fileID: 6076614708038604963, guid: 9cad36546b7a7dd44b5ce084f90a0cb2, type: 3}
+  - {fileID: 2207563463854757644, guid: 9617b8f2429221148ac441d1f7784b79, type: 3}
+  - {fileID: 7704941005259981174, guid: 1762db84f7a3cd940a4cb41cfbc458c0, type: 3}
   parent: {fileID: 0}
