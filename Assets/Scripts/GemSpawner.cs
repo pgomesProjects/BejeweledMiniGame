@@ -30,7 +30,7 @@ public class GemSpawner : MonoBehaviour
             gemManager.threeMatchStartLimit--;
             if(gemManager.threeMatchStartLimit == 0)
             {
-                Debug.LogError("ONLY 2 ROW PIECES TOGETHER FOR NOW.");
+                Debug.LogWarning("ONLY 2 ROW PIECES TOGETHER FOR NOW.");
                 gemManager.maxPieces = 2;
             }
         }
