@@ -80,8 +80,19 @@ public class GemSpawner : MonoBehaviour
         //Check to see if the gem manager needs to be reset
         gemManager.CheckForReset();
 
-        GameObject newObject = Instantiate(gemPrefabs[index], transform.position, gemPrefabs[index].transform.rotation);
-        newObject.transform.SetParent(parent.transform);
+        Gem newObject = Instantiate(gemPrefabs[index].GetComponent<Gem>(), transform.position, gemPrefabs[index].transform.rotation);
+        newObject.gameObject.name = "Gem (" + gemManager.currentRow + "," + gemManager.currentCol + ")";
+        newObject.gameObject.transform.SetParent(parent.transform);
+        GameMatrix.main.InitializeGem(newObject, gemManager.currentRow, gemManager.currentCol);
+
+        gemManager.currentCol += 1;
+
+        //If the last gem in a row has been spawned, decrement the row counter and reset the col counter
+        if (gemManager.currentCol == 7)
+        {
+            gemManager.currentRow -= 1;
+            gemManager.currentCol = 0;
+        }
     }
 
     private bool HasGemSpawned(int index)
