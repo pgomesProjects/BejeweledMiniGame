@@ -19,18 +19,32 @@ public class GemSpawner : MonoBehaviour
 
     public void SpawnGemStart()
     {
+        GameMatrix.main.InitializeGem(CreateGemObject(), gemManager.currentCol);
+
+        gemManager.currentCol += 1;
+
+        //If the last gem in a row has been spawned, decrement the row counter and reset the col counter
+        if (gemManager.currentCol == 7)
+        {
+            gemManager.currentRow -= 1;
+            gemManager.currentCol = 0;
+        }
+    }
+
+    public Gem CreateGemObject()
+    {
         //If 3 of the same gem have spawned, prevent it from spawning a 4th
         if (gemManager.duplicateGemCounter == gemManager.maxPieces - 1)
         {
-            Debug.Log("Max Pieces Have Been Spawned!");
+            //Debug.Log("Max Pieces Have Been Spawned!");
             gemManager.tempPreventSpawn = gemManager.previousGemSpawn;
             usedGems[gemManager.tempPreventSpawn] = 1;
-            
+
             //If the max amount of match three pieces have been spawned, limit the spawn to only 2 pieces
             gemManager.threeMatchStartLimit--;
-            if(gemManager.threeMatchStartLimit == 0)
+            if (gemManager.threeMatchStartLimit == 0)
             {
-                Debug.LogWarning("ONLY 2 ROW PIECES TOGETHER FOR NOW.");
+                //Debug.LogWarning("ONLY 2 ROW PIECES TOGETHER FOR NOW.");
                 gemManager.maxPieces = 2;
             }
         }
@@ -75,7 +89,7 @@ public class GemSpawner : MonoBehaviour
         //Tell the gem manager what the last gem spawned was
         gemManager.previousGemSpawn = index;
 
-        Debug.Log("Previous Gem Spawn: " + gemManager.previousGemSpawn);
+        //Debug.Log("Previous Gem Spawn: " + gemManager.previousGemSpawn);
 
         //Check to see if the gem manager needs to be reset
         gemManager.CheckForReset();
@@ -83,16 +97,8 @@ public class GemSpawner : MonoBehaviour
         Gem newObject = Instantiate(gemPrefabs[index].GetComponent<Gem>(), transform.position, gemPrefabs[index].transform.rotation);
         newObject.gameObject.name = "Gem (" + gemManager.currentRow + "," + gemManager.currentCol + ")";
         newObject.gameObject.transform.SetParent(parent.transform);
-        GameMatrix.main.InitializeGem(newObject, gemManager.currentRow, gemManager.currentCol);
 
-        gemManager.currentCol += 1;
-
-        //If the last gem in a row has been spawned, decrement the row counter and reset the col counter
-        if (gemManager.currentCol == 7)
-        {
-            gemManager.currentRow -= 1;
-            gemManager.currentCol = 0;
-        }
+        return newObject;
     }
 
     private bool HasGemSpawned(int index)
@@ -106,5 +112,14 @@ public class GemSpawner : MonoBehaviour
             if (usedGems[i] == 0)
                 return false;
         return true;
+    }
+
+    public void SpawnGem(Vector2 coords)
+    {
+        int index = Random.Range(0, gemPrefabs.Length);
+        Gem newObject = Instantiate(gemPrefabs[index].GetComponent<Gem>(), transform.position, gemPrefabs[index].transform.rotation);
+        newObject.gameObject.name = "Gem (" + coords.x + "," + coords.y + ")";
+        newObject.gameObject.transform.SetParent(parent.transform);
+        GameMatrix.main.InitializeGem(newObject, (int)coords.y);
     }
 }

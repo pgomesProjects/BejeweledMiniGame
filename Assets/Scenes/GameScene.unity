@@ -7520,7 +7520,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 306821026417112606, guid: 3ce9fd07d23f87e4ab5ce40938893140, type: 3}
       propertyPath: m_Name
-      value: GemSpawner
+      value: GemSpawner (0)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3ce9fd07d23f87e4ab5ce40938893140, type: 3}

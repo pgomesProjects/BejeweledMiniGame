@@ -43,9 +43,55 @@ public class GameMatrix : MonoBehaviour
         }
     }
 
-    public void InitializeGem(Gem currentGem, int row, int col)
+    public void InitializeGem(Gem currentGem, int col)
     {
-        gemObjects[row, col] = currentGem;
+        //Move down any other gems if needed
+        ShiftDownColumn(col);
+
+        //Place the gem in the top space and update the other gems
+        PlaceGemInColumn(currentGem, col);
+    }
+
+    private void ShiftDownColumn(int col)
+    {
+        //If the row needs to be shifted down, shift down
+        if(gemObjects[0, col] != null)
+        {
+            Gem[] gemColCopy = new Gem[gemObjects.GetLength(1)];
+
+            for (int row = 1; row < gemObjects.GetLength(1); row++)
+            {
+                gemColCopy[row] = gemObjects[row - 1, col];
+            }
+
+            for (int row = 0; row < gemObjects.GetLength(1); row++)
+            {
+                gemObjects[row, col] = gemColCopy[row];
+            }
+        }
+    }
+
+    private void PlaceGemInColumn(Gem currentGem, int col)
+    {
+        bool gemPlaced = false;
+        for (int row = 0; row < gemObjects.GetLength(1) - 1; row++)
+        {
+            if(gemObjects[(row + 1), col] == null)
+            {
+                continue;
+            }
+            else
+            {
+                gemObjects[row, col] = currentGem;
+                gemPlaced = true;
+                break;
+            }
+        }
+
+        if (!gemPlaced)
+        {
+            gemObjects[gemObjects.GetLength(1) - 1, col] = currentGem;
+        }
     }
 
     public void LockPositions()
