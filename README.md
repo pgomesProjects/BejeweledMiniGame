@@ -21,3 +21,8 @@ Total Hours Spent: 7
 > Created Gem Pieces Matrix and Implemented Drag Piece Function (Requires Match Detection System To Be In Non-Buggy State), AudioManager Added, Title Screen and End Session Buttons Blocked Out
 
 Total Hours Spent: 10.5
+
+**4/8/22**
+> Worked on Gem Match Detection System and Matrix Refresh System, Still In Buggy State
+
+Total Hours Spent: 16.5
