@@ -8,6 +8,7 @@ public class GameMatrix : MonoBehaviour
     [SerializeField] private GameObject gemHolder;
     private GridPieceEvent[,] gridPieceEvents;
     private Gem[,] gemObjects;
+    private GemSpawnerManager gemSpawnerManager;
 
     public static GameMatrix main;
 
@@ -28,6 +29,7 @@ public class GameMatrix : MonoBehaviour
     void Start()
     {
         pieceCurrentlySelected = false;
+        gemSpawnerManager = FindObjectOfType<GemSpawnerManager>();
         InitializeGridEventsArray();
     }
 
@@ -59,9 +61,14 @@ public class GameMatrix : MonoBehaviour
         {
             Gem[] gemColCopy = new Gem[gemObjects.GetLength(1)];
 
-            for (int row = 1; row < gemObjects.GetLength(1); row++)
+            int columnCounter = gemObjects.GetLength(1) - 1;
+            for (int row = gemObjects.GetLength(1) - 1; row >= 0; row--)
             {
-                gemColCopy[row] = gemObjects[row - 1, col];
+                if(gemObjects[row, col] != null)
+                {
+                    gemColCopy[columnCounter] = gemObjects[row, col];
+                    columnCounter--;
+                }
             }
 
             for (int row = 0; row < gemObjects.GetLength(1); row++)
@@ -159,10 +166,23 @@ public class GameMatrix : MonoBehaviour
         }
     }
 
+    public void ClearBoardHover()
+    {
+        foreach(var i in gridPieceEvents)
+        {
+            i.OnValidMoveExit();
+        }
+    }
+
     public Gem GetGemObject(Vector2 coords)
     {
         //Returns a gem object in the gem matrix
         return gemObjects[(int)coords.x, (int)coords.y];
+    }
+
+    public void SetGemObject(Vector2 coords, Gem gemValue)
+    {
+        gemObjects[(int)coords.x, (int)coords.y] = gemValue;
     }
 
     public void SwapPieces(Vector3 selectedPiece)
@@ -186,6 +206,12 @@ public class GameMatrix : MonoBehaviour
                 currentGemSelected.transform.position = tempPosition;
                 currentGemSelected.SetPreviousPosition(currentGemSelected.transform.position);*/
     }
+
+    public void StartMatchCheck()
+    {
+        StartCoroutine(gemSpawnerManager.CheckForMatches());
+    }
+
     public Vector3 GetPreviousSelectedPiece() { return previousSelectedPiece; }
     public void SetPreviousSelectedPiece(Vector3 selectedPiece) { previousSelectedPiece = selectedPiece; }
     public Gem[,] GetGemArray() { return gemObjects; }

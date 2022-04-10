@@ -182,8 +182,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Quit
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: a2b37dde49bcdd44381eb6f43bf04694, type: 2}
+  m_sharedMaterial: {fileID: 202090253085741450, guid: a2b37dde49bcdd44381eb6f43bf04694, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -713,7 +713,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2df902f6b6e7ff4f919904b33ff7dd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sounds: []
+  sounds:
+  - name: Titlescreen
+    clip: {fileID: 8300000, guid: 9836b3ccd2557d347abc9da951e399bf, type: 3}
+    pitch: 1
+    loop: 1
+    source: {fileID: 0}
+  - name: Track1
+    clip: {fileID: 8300000, guid: 390a99ef74f970145b58ec016149b716, type: 3}
+    pitch: 1
+    loop: 1
+    source: {fileID: 0}
+  - name: Track2
+    clip: {fileID: 8300000, guid: c5a69bb8359997545a441a66c2f1aed0, type: 3}
+    pitch: 1
+    loop: 1
+    source: {fileID: 0}
+  - name: Track3
+    clip: {fileID: 8300000, guid: 4336228ab2ffa3340a5b48b1ddecacbf, type: 3}
+    pitch: 1
+    loop: 1
+    source: {fileID: 0}
 --- !u!1 &569737804
 GameObject:
   m_ObjectHideFlags: 0
@@ -884,10 +904,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Personal Best: '
+  m_text: 'Personal Best: 0'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 686893f49b9bcc4489d2a3ed1f6d55e4, type: 2}
+  m_sharedMaterial: {fileID: -5995645714877724536, guid: 686893f49b9bcc4489d2a3ed1f6d55e4, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1020,8 +1040,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Start
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: a2b37dde49bcdd44381eb6f43bf04694, type: 2}
+  m_sharedMaterial: {fileID: 202090253085741450, guid: a2b37dde49bcdd44381eb6f43bf04694, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1271,8 +1291,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Mindless Matcher
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 686893f49b9bcc4489d2a3ed1f6d55e4, type: 2}
+  m_sharedMaterial: {fileID: -5995645714877724536, guid: 686893f49b9bcc4489d2a3ed1f6d55e4, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

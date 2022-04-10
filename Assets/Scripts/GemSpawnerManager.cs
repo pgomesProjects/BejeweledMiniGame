@@ -25,14 +25,16 @@ public class GemSpawnerManager : MonoBehaviour
 
     private GemSpawner[] allGemSpawners;
 
-    private List<Vector2> gemSpawnQueue;
-    private float spawnTimer = 1;
+    private List<Vector2> gemDestroyQueue;
+    private int[] gemSpawnQueue;
+    private float spawnTimer = 0.75f;
     private float currentTimer = 0;
 
     private void Start()
     {
         allGemSpawners = GetComponentsInChildren<GemSpawner>();
-        gemSpawnQueue = new List<Vector2>();
+        gemDestroyQueue = new List<Vector2>();
+        gemSpawnQueue = new int[allGemSpawners.Length];
         StartCoroutine(SpawnOnStart());
     }
 
@@ -48,17 +50,18 @@ public class GemSpawnerManager : MonoBehaviour
         }
         yield return new WaitForSeconds(1);
 
-        //GameMatrix.main.LockPositions();
-
-        StartCoroutine(StartingMatches());
+        StartCoroutine(CheckForMatches());
     }
 
-    IEnumerator StartingMatches()
+    public IEnumerator CheckForMatches()
     {
         bool allMatchesMade = false;
+        PlayerController.main.SetCanMove(false);
+
+        //While matches can be made, detect matches
         while (!allMatchesMade)
         {
-            allMatchesMade = !CheckForStartingMatches();
+            allMatchesMade = !CheckIfMatchMade();
             foreach (var i in GameMatrix.main.GetGemArray())
             {
                 Debug.Log("Gem Array Object: " + i);
@@ -66,15 +69,23 @@ public class GemSpawnerManager : MonoBehaviour
             currentTimer = spawnTimer;
             while(currentTimer > 0)
             {
+                Debug.Log("Current Timer: " + currentTimer);
                 currentTimer -= Time.deltaTime;
                 yield return null;
             }
         }
+        PlayerController.main.SetCanMove(true);
     }
 
-    public bool CheckForStartingMatches()
+    public bool CheckIfMatchMade()
     {
-        return CheckHorizontal();
+        bool isMatchMadeHorizontal = CheckHorizontal();
+        bool isMatchMadeVertical = CheckVertical();
+        //Destroy all matched gems
+        DestroyMatches();
+        //Spawn the gems in the queue
+        StartCoroutine(SpawnQueue());
+        return isMatchMadeHorizontal || isMatchMadeVertical;
     }
 
     private bool CheckHorizontal()
@@ -96,7 +107,7 @@ public class GemSpawnerManager : MonoBehaviour
                     //If there are at least 2 previous duplicates, there is a match
                     if (duplicateCounter > 1)
                     {
-                        DestroyHorizontal(row, col, duplicateCounter);
+                        AddToDestroyHorizontal(row, col, duplicateCounter);
                         matchMade = true;
                     }
                     duplicateCounter = 0;
@@ -105,94 +116,123 @@ public class GemSpawnerManager : MonoBehaviour
             //If there are at least 2 previous duplicates, there is a match
             if (duplicateCounter > 1)
             {
-                DestroyHorizontal(row, 7, duplicateCounter);
+                AddToDestroyHorizontal(row, GameMatrix.main.GetGemArray().GetLength(1), duplicateCounter);
                 matchMade = true;
             }
             duplicateCounter = 0;
         }
 
-        if(gemSpawnQueue.Count != 0)
+        return matchMade;
+    }
+
+    private bool CheckVertical()
+    {
+        bool matchMade = false;
+        int duplicateCounter = 0;
+        for (int col = 0; col < GameMatrix.main.GetGemArray().GetLength(1); col++)
         {
-            //Check for duplicate gem names in the queue
-            CheckForDuplicates();
-            //Spawn the gems in the queue
-            StartCoroutine(SpawnQueue());
+            for (int row = 1; row < GameMatrix.main.GetGemArray().GetLength(0); row++)
+            {
+                //If the previous piece is equal to the first piece, there is a duplicate
+                if (GameMatrix.main.GetGemArray()[row - 1, col].GetComponent<SpriteRenderer>().sprite ==
+                    GameMatrix.main.GetGemArray()[row, col].GetComponent<SpriteRenderer>().sprite)
+                {
+                    duplicateCounter += 1;
+                }
+                else
+                {
+                    //If there are at least 2 previous duplicates, there is a match
+                    if (duplicateCounter > 1)
+                    {
+                        AddToDestroyVertical(row, col, duplicateCounter);
+                        matchMade = true;
+                    }
+                    duplicateCounter = 0;
+                }
+            }
+            //If there are at least 2 previous duplicates, there is a match
+            if (duplicateCounter > 1)
+            {
+                AddToDestroyVertical(GameMatrix.main.GetGemArray().GetLength(0), col, duplicateCounter);
+                matchMade = true;
+            }
+            duplicateCounter = 0;
         }
 
         return matchMade;
     }
 
-    private void CheckForDuplicates()
+    private void CheckForDestroyDuplicates()
     {
-        //Sort Vector2 list
-        List<Vector2> orderedQueue = gemSpawnQueue.OrderBy(x => x.x).ThenBy(x => x.y).ToList();
+        //Remove duplicates
+        gemDestroyQueue = gemDestroyQueue.Distinct().ToList();
+        //Sort array
+        gemDestroyQueue = gemDestroyQueue.OrderBy(x => x.x).ThenBy(x => x.y).ToList();
+    }
 
-        //Check for duplicates. If a duplicate coordinate is found, move it to the next row
-        for (int i = 1; i < orderedQueue.Count; i++)
+    private void DestroyMatches()
+    {
+        CheckForDestroyDuplicates();
+        if (gemDestroyQueue.Count != 0)
         {
-            if(orderedQueue[i] == orderedQueue[i - 1])
+            for (int i = 0; i < gemDestroyQueue.Count; i++)
             {
-                orderedQueue.Add(new Vector2(orderedQueue[i].x + 1, orderedQueue[i].y));
-                orderedQueue.Remove(orderedQueue[i]);
+                PlayerController.main.UpdateScore(GameMatrix.main.GetGemObject(gemDestroyQueue[i]).GetScoreValue());
+                Destroy(GameMatrix.main.GetGemObject(gemDestroyQueue[i]).gameObject);
+                GameMatrix.main.SetGemObject(gemDestroyQueue[i], null);
             }
-        }
 
-        //Sort list again once finished and save to list
-        orderedQueue = orderedQueue.OrderBy(x => x.x).ThenBy(x => x.y).Reverse().ToList();
-        gemSpawnQueue = orderedQueue;
+            gemDestroyQueue.Clear();
+        }
     }
 
     IEnumerator SpawnQueue()
     {
-        int row = (int)gemSpawnQueue[0].x;
-
-        for(int i = 0; i < gemSpawnQueue.Count; i++)
+        while(!IsSpawnQueueClear())
         {
-            if(gemSpawnQueue[i].x < row)
+            for(int col = 0; col < gemSpawnQueue.Length; col++)
             {
-                row -= 1;
-                yield return new WaitForSeconds(0.5f);
+                if(gemSpawnQueue[col] > 0)
+                {
+                    gemSpawnQueue[col] -= 1;
+                    allGemSpawners[col].SpawnGem(new Vector2(gemSpawnQueue[col], col));
+                }
             }
-            allGemSpawners[(int)gemSpawnQueue[i].y].SpawnGem(gemSpawnQueue[i]);
-            yield return null;
+
+            yield return new WaitForSeconds(0.5f);
+            currentTimer = spawnTimer;
         }
 
-        foreach (var i in GameMatrix.main.GetGemArray())
-        {
-            Debug.Log("Gem Array Object: " + i);
-        }
+        yield return null;
+
     }
 
-    private void DestroyHorizontal(int row, int col, int duplicateCounter)
+    private void AddToDestroyHorizontal(int row, int col, int duplicateCounter)
     {
         for (int i = duplicateCounter; i >= 0; i--)
         {
-            PlayerController.main.UpdateScore((GameMatrix.main.GetGemArray()[row, col - i - 1].GetScoreValue()));
-            Destroy(GameMatrix.main.GetGemArray()[row, col - i - 1].gameObject);
-            GameMatrix.main.GetGemArray()[row, col - i - 1] = null;
-            gemSpawnQueue.Add(new Vector2(0, (col - i - 1)));
-            //Adjust the names of the gems in their columns
-            AdjustColumn(col - i - 1);
+            gemDestroyQueue.Add(new Vector2(row, col - i - 1));
+            gemSpawnQueue[col - i - 1] += 1;
         }
     }
 
-    private void AdjustColumn(int col)
+    private void AddToDestroyVertical(int row, int col, int duplicateCounter)
     {
-        int row = GameMatrix.main.GetGemArray().GetLength(0) - 1;
-
-        for (int i = GameMatrix.main.GetGemArray().GetLength(1) - 1; i >= 0; i--)
+        for (int i = duplicateCounter; i >= 0; i--)
         {
-            if (GameMatrix.main.GetGemArray()[row, col] != null)
-            {
-                GameMatrix.main.GetGemArray()[row, col].gameObject.name = "Gem (" + i + "," + col + ")";
-                GameMatrix.main.GetGemArray()[row, col] = GameMatrix.main.GetGemArray()[i, col];
-                row -= 1;
-            }
-            else
-            {
-                continue;
-            }
+            gemDestroyQueue.Add(new Vector2(row - i - 1, col));
+            gemSpawnQueue[col] += 1;
         }
+    }
+
+    private bool IsSpawnQueueClear()
+    {
+        foreach(var i in gemSpawnQueue)
+        {
+            if (i > 0)
+                return false;
+        }
+        return true;
     }
 
     public void CheckForReset()

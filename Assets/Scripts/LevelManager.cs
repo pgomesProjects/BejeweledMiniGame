@@ -13,6 +13,7 @@ public class LevelManager : MonoBehaviour
 
     public void BackToTitle()
     {
+        FindObjectOfType<AudioManager>().Stop("Track" + PlayerController.main.currentTrack);
         SceneManager.LoadScene("Titlescreen");
     }
 }
