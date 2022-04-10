@@ -28,6 +28,6 @@ Total Hours Spent: 10.5
 Total Hours Spent: 16.5
 
 **4/9/22**
-> Gem Match Detection System Finished (Some Bugs Need Fixing), Destroy and Spawn Queues Finished, Personal Best Score System, Sketches Of Gems and Background Created, Title Screen and Random Background Music Added
+> Gem Match Detection System Finished (Some Bugs Need Fixing), Destroy and Spawn Queues Finished, Personal Best Score System, Sketches Of Gems and Background Created, Fonts Added, Title Screen and Random Background Music Added
 
 Total Hours Spent: 19.5
