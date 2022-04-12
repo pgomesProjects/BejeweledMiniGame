@@ -16,7 +16,12 @@ public class GameMatrix : MonoBehaviour
     public bool pieceCurrentlySelected;
     private Gem currentGemSelected;
     private Vector2 currentSelectedPiece = new Vector2(-1, -1);
+    private Vector2 originalSelectCoords = new Vector2(-1, -1);
     private Vector2 previousSelectedPiece = new Vector2(-1, -1);
+    private Vector2 currentMousePos = new Vector2(-1, -1);
+
+    [HideInInspector]
+    public bool hasOneMatch = false;
 
     private void Awake()
     {
@@ -187,9 +192,9 @@ public class GameMatrix : MonoBehaviour
 
     public void SwapPieces(Vector3 selectedPiece)
     {
-        Debug.Log("Swap Pieces!");
-        Debug.Log("First: " + gemObjects[(int)previousSelectedPiece.x, (int)previousSelectedPiece.y]);
-        Debug.Log("Second: " + gemObjects[(int)selectedPiece.x, (int)selectedPiece.y]);
+        //Debug.Log("Swap Pieces!");
+        //Debug.Log("First: " + gemObjects[(int)previousSelectedPiece.x, (int)previousSelectedPiece.y]);
+        //Debug.Log("Second: " + gemObjects[(int)selectedPiece.x, (int)selectedPiece.y]);
         //Swap routine for gem pieces
         Gem temp = gemObjects[(int)previousSelectedPiece.x, (int)previousSelectedPiece.y];
         Vector3 tempPos = gemObjects[(int)previousSelectedPiece.x, (int)previousSelectedPiece.y].transform.position;
@@ -199,12 +204,87 @@ public class GameMatrix : MonoBehaviour
         gemObjects[(int)previousSelectedPiece.x, (int)previousSelectedPiece.y] = gemObjects[(int)selectedPiece.x, (int)selectedPiece.y];
         gemObjects[(int)selectedPiece.x, (int)selectedPiece.y] = temp;
 
-        Debug.Log("Swapped First: " + gemObjects[(int)previousSelectedPiece.x, (int)previousSelectedPiece.y]);
+        //Debug.Log("Swapped First: " + gemObjects[(int)previousSelectedPiece.x, (int)previousSelectedPiece.y]);
+        //Debug.Log("Swapped Second: " + gemObjects[(int)selectedPiece.x, (int)selectedPiece.y]);
+    }
+
+    public void SwapPieces(Vector3 selectedPiece, Vector3 otherPiece)
+    {
+        Debug.Log("Swap Pieces!");
+        Debug.Log("First: " + gemObjects[(int)otherPiece.x, (int)otherPiece.y]);
+        Debug.Log("Second: " + gemObjects[(int)selectedPiece.x, (int)selectedPiece.y]);
+        //Swap routine for gem pieces
+        Gem temp = gemObjects[(int)otherPiece.x, (int)otherPiece.y];
+        Vector3 tempPos = gemObjects[(int)otherPiece.x, (int)otherPiece.y].transform.position;
+
+        gemObjects[(int)otherPiece.x, (int)otherPiece.y].transform.position = gemObjects[(int)selectedPiece.x, (int)selectedPiece.y].transform.position;
+        gemObjects[(int)selectedPiece.x, (int)selectedPiece.y].transform.position = tempPos;
+        gemObjects[(int)otherPiece.x, (int)otherPiece.y] = gemObjects[(int)selectedPiece.x, (int)selectedPiece.y];
+        gemObjects[(int)selectedPiece.x, (int)selectedPiece.y] = temp;
+
+        Debug.Log("Swapped First: " + gemObjects[(int)otherPiece.x, (int)otherPiece.y]);
         Debug.Log("Swapped Second: " + gemObjects[(int)selectedPiece.x, (int)selectedPiece.y]);
-        /*        Vector3 tempPosition = piece.transform.position;
-                piece.transform.position = currentGemSelected.GetPreviousPosition();
-                currentGemSelected.transform.position = tempPosition;
-                currentGemSelected.SetPreviousPosition(currentGemSelected.transform.position);*/
+    }
+
+    public Vector2 GetOriginalCoordsPos()
+    {
+        return originalSelectCoords;
+    }
+
+    public void SetOriginalCoordsPos(Vector2 coords)
+    {
+        originalSelectCoords = coords;
+    }
+
+    public void ResetSwap(Vector3 startingPosition, Vector3 endingPosition)
+    {
+        if(startingPosition != endingPosition)
+        {
+            Debug.Log("Starting Position: " + startingPosition);
+            Debug.Log("Ending Position: " + endingPosition);
+
+            //Reset pieces vertically
+            if(startingPosition.x != endingPosition.x)
+            {
+                while (startingPosition.x != endingPosition.x)
+                {
+                    //Move up
+                    if (startingPosition.x > endingPosition.x)
+                    {
+                        SwapPieces(startingPosition, new Vector2(startingPosition.x - 1, startingPosition.y));
+                        startingPosition.x -= 1;
+                    }
+                    //Move down
+                    else if (startingPosition.x < endingPosition.x)
+                    {
+                        SwapPieces(startingPosition, new Vector2(startingPosition.x + 1, startingPosition.y));
+                        startingPosition.x += 1;
+                    }
+                }
+            }
+
+            //Reset pieces horizontally
+            else if (startingPosition.y != endingPosition.y)
+            {
+                while (startingPosition.y != endingPosition.y)
+                {
+                    //Move left
+                    if (startingPosition.y > endingPosition.y)
+                    {
+                        SwapPieces(startingPosition, new Vector2(startingPosition.x, startingPosition.y - 1));
+                        startingPosition.y -= 1;
+                    }
+                    //Move right
+                    else if(startingPosition.y < endingPosition.y)
+                    {
+                        SwapPieces(startingPosition, new Vector2(startingPosition.x, startingPosition.y + 1));
+                        startingPosition.y += 1;
+                    }
+                    Debug.Log("New Starting Pos: " + startingPosition);
+                    Debug.Log("Ending Pos: " + endingPosition);
+                }
+            }
+        }
     }
 
     public void StartMatchCheck()
@@ -212,6 +292,8 @@ public class GameMatrix : MonoBehaviour
         StartCoroutine(gemSpawnerManager.CheckForMatches());
     }
 
+    public Vector2 GetCurrentMousePosition() { return currentMousePos; }
+    public void SetCurrentMousePosition(Vector2 mousePos) { currentMousePos = mousePos; }
     public Vector3 GetPreviousSelectedPiece() { return previousSelectedPiece; }
     public void SetPreviousSelectedPiece(Vector3 selectedPiece) { previousSelectedPiece = selectedPiece; }
     public Gem[,] GetGemArray() { return gemObjects; }

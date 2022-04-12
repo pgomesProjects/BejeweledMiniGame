@@ -24,6 +24,7 @@ public class GridPieceEvent : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     {
         if (PlayerController.main.GetCanMove())
         {
+            GameMatrix.main.SetCurrentMousePosition(GetCoords());
             if (!GameMatrix.main.pieceCurrentlySelected)
             {
                 GameMatrix.main.SetValidMovePieces(gameObject.name);
@@ -45,6 +46,7 @@ public class GridPieceEvent : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         if (PlayerController.main.GetCanMove())
         {
             GameMatrix.main.SetGemSelected(GameMatrix.main.GetGemObject(GetCoords()));
+            GameMatrix.main.SetOriginalCoordsPos(GetCoords());
             GameMatrix.main.GetGemSelected().SetIsSelected(true);
             GameMatrix.main.pieceCurrentlySelected = true;
         }
@@ -55,12 +57,20 @@ public class GridPieceEvent : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         if (PlayerController.main.GetCanMove())
         {
             GameMatrix.main.GetGemSelected().SetIsSelected(false);
-            GameMatrix.main.SetGemSelected(null);
-            GameMatrix.main.pieceCurrentlySelected = false;
 
             //Check for any matches
             GameMatrix.main.StartMatchCheck();
             GameMatrix.main.ClearBoardHover();
+
+            //If no matches have made made, swap the piece back to it's original position
+            if (!GameMatrix.main.hasOneMatch)
+            {
+                GameMatrix.main.ResetSwap(GameMatrix.main.GetCurrentMousePosition(), GameMatrix.main.GetOriginalCoordsPos());
+            }
+
+            GameMatrix.main.SetGemSelected(null);
+            GameMatrix.main.SetOriginalCoordsPos(new Vector2(-1, -1));
+            GameMatrix.main.pieceCurrentlySelected = false;
         }
     }
 
@@ -78,6 +88,7 @@ public class GridPieceEvent : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     {
         if (PlayerController.main.GetCanMove())
         {
+            GameMatrix.main.SetCurrentMousePosition(new Vector2(-1, -1));
             if (!GameMatrix.main.pieceCurrentlySelected)
             {
                 GameMatrix.main.ResetValidMovePieces();

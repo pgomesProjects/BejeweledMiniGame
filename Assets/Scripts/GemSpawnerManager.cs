@@ -55,6 +55,7 @@ public class GemSpawnerManager : MonoBehaviour
 
     public IEnumerator CheckForMatches()
     {
+        GameMatrix.main.hasOneMatch = false;
         bool allMatchesMade = false;
         PlayerController.main.SetCanMove(false);
 
@@ -62,14 +63,21 @@ public class GemSpawnerManager : MonoBehaviour
         while (!allMatchesMade)
         {
             allMatchesMade = !CheckIfMatchMade();
-            foreach (var i in GameMatrix.main.GetGemArray())
+            //Check to see if there's been at least one match, stop checking if it turns true
+            if (!GameMatrix.main.hasOneMatch)
+            {
+                GameMatrix.main.hasOneMatch = !allMatchesMade;
+                if(GameMatrix.main.hasOneMatch)
+                    Debug.Log("One Match Made");
+            }
+/*            foreach (var i in GameMatrix.main.GetGemArray())
             {
                 Debug.Log("Gem Array Object: " + i);
-            }
+            }*/
             currentTimer = spawnTimer;
             while(currentTimer > 0)
             {
-                Debug.Log("Current Timer: " + currentTimer);
+                //Debug.Log("Current Timer: " + currentTimer);
                 currentTimer -= Time.deltaTime;
                 yield return null;
             }

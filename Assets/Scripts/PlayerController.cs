@@ -14,15 +14,12 @@ public class PlayerController : MonoBehaviour
     public int currentTrack;
 
     public static PlayerController main;
-    PlayerControlSystem playerControls;
 
     private bool canMove;
 
     private void Awake()
     {
         main = this;
-        playerControls = new PlayerControlSystem();
-        playerControls.Player.Quit.performed += _ => QuitGame();
         playerScore = 0;
         canMove = false;
     }
@@ -35,18 +32,8 @@ public class PlayerController : MonoBehaviour
         if(FindObjectOfType<AudioManager>() != null)
         {
             currentTrack = Random.Range(1, numberOfTracks + 1);
-            FindObjectOfType<AudioManager>().Play("Track" + currentTrack, PlayerPrefs.GetFloat("BGMVolume"));
+            FindObjectOfType<AudioManager>().Play("Track" + currentTrack, PlayerPrefs.GetFloat("BGMVolume", 0.5f));
         }
-    }
-
-    private void OnEnable()
-    {
-        playerControls.Enable();
-    }
-
-    private void OnDisable()
-    {
-        playerControls.Disable();
     }
 
     public void UpdateScore(int score)
@@ -64,13 +51,4 @@ public class PlayerController : MonoBehaviour
 
     public bool GetCanMove() { return canMove; }
     public void SetCanMove(bool move) { canMove = move; }
-
-    private void QuitGame()
-    {
-        Debug.Log("Quitting Game...");
-        Application.Quit();
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#endif
-    }
 }
