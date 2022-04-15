@@ -38,6 +38,6 @@ Total Hours Spent: 19.5
 Total Hours Spent: 23
 
 **4/14/22**
-> Fixed Gem Spawn Bug. One gem asset completed. Others are in progress.
+> Fixed Gem Spawn Bug. One Gem Asset Completed. Others In Progress
 
 Total Hours Spent: 24
