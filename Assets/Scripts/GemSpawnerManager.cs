@@ -172,10 +172,8 @@ public class GemSpawnerManager : MonoBehaviour
 
     private void CheckForDestroyDuplicates()
     {
-        //Remove duplicates
-        gemDestroyQueue = gemDestroyQueue.Distinct().ToList();
-        //Sort array
-        gemDestroyQueue = gemDestroyQueue.OrderBy(x => x.x).ThenBy(x => x.y).ToList();
+        //Remove duplicates and sort array
+        gemDestroyQueue = gemDestroyQueue.Distinct().OrderBy(x => x.x).ThenBy(x => x.y).ToList();
     }
 
     private void DestroyMatches()
@@ -185,7 +183,10 @@ public class GemSpawnerManager : MonoBehaviour
         {
             for (int i = 0; i < gemDestroyQueue.Count; i++)
             {
+                //Get the score of the gem and destory the spawn
                 PlayerController.main.UpdateScore(GameMatrix.main.GetGemObject(gemDestroyQueue[i]).GetScoreValue());
+                //Add gem to column spawn queue
+                gemSpawnQueue[(int)gemDestroyQueue[i].y] += 1;
                 Destroy(GameMatrix.main.GetGemObject(gemDestroyQueue[i]).gameObject);
                 GameMatrix.main.SetGemObject(gemDestroyQueue[i], null);
             }
@@ -220,7 +221,7 @@ public class GemSpawnerManager : MonoBehaviour
         for (int i = duplicateCounter; i >= 0; i--)
         {
             gemDestroyQueue.Add(new Vector2(row, col - i - 1));
-            gemSpawnQueue[col - i - 1] += 1;
+            //gemSpawnQueue[col - i - 1] += 1;
         }
     }
 
@@ -229,7 +230,7 @@ public class GemSpawnerManager : MonoBehaviour
         for (int i = duplicateCounter; i >= 0; i--)
         {
             gemDestroyQueue.Add(new Vector2(row - i - 1, col));
-            gemSpawnQueue[col] += 1;
+            //gemSpawnQueue[col] += 1;
         }
     }
 
