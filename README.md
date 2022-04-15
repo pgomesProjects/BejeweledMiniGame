@@ -36,3 +36,8 @@ Total Hours Spent: 19.5
 > Created Match Unsuccessful System, Drew Clara Portrait Lineart and Flat Colors, Added How To Play and Settings Menu with Functional Volume Sliders. Created Alpha Build For Testing.
 
 Total Hours Spent: 23
+
+**4/14/22**
+> Fixed Gem Spawn Bug. One gem asset completed. Others are in progress.
+
+Total Hours Spent: 24
