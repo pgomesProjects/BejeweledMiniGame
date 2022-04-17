@@ -9,19 +9,27 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI personalBestText;
     [SerializeField] private int numberOfTracks = 3;
 
+    
+    private bool canMove;
+    private bool menuActive;
+    private bool hasHighScore;
+    private bool isGameActive;
+
     private int playerScore;
+
     [HideInInspector]
     public int currentTrack;
 
     public static PlayerController main;
 
-    private bool canMove;
-
     private void Awake()
     {
         main = this;
         playerScore = 0;
+        hasHighScore = false;
+        isGameActive = true;
         canMove = false;
+        menuActive = false;
     }
 
     private void Start()
@@ -41,14 +49,21 @@ public class PlayerController : MonoBehaviour
         playerScore += score;
         scoreText.text = "Score: " + playerScore;
 
-        //If the current score is greater than or equal to the personal best, update the personal best score
-        if(playerScore >= PlayerPrefs.GetInt("PersonalBest"))
+        //If the current score is greater than the personal best, update the personal best score
+        if(playerScore > PlayerPrefs.GetInt("PersonalBest"))
         {
+            hasHighScore = true;
             PlayerPrefs.SetInt("PersonalBest", playerScore);
             personalBestText.text = "Personal Best: " + PlayerPrefs.GetInt("PersonalBest");
         }
     }
 
+    public bool IsGameActive() { return isGameActive; }
+    public void SetGameActive(bool gameActive) { isGameActive = gameActive; }
+    public bool HasHighScore() { return hasHighScore; }
+    public int GetPlayerScore() { return playerScore; }
     public bool GetCanMove() { return canMove; }
     public void SetCanMove(bool move) { canMove = move; }
+    public bool IsMenuActive() { return menuActive; }
+    public void SetMenuActive(bool menu) { menuActive = menu; }
 }

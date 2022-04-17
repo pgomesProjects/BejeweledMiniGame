@@ -20,7 +20,8 @@ public class GameTimer : MonoBehaviour
 
     IEnumerator ActiveTimer()
     {
-        while (true)
+        //While the game is active, iterate the timer
+        while (PlayerController.main.IsGameActive())
         {
             yield return new WaitForSeconds(1);
 
@@ -32,10 +33,15 @@ public class GameTimer : MonoBehaviour
                 minutes++;
             }
 
-            if(seconds < 10)
-                timerText.text = "Time: " + minutes + ":0" + seconds;
-            else
-                timerText.text = "Time: " + minutes + ":" + seconds;
+            timerText.text = "Time: " + ToString();
         }
+    }
+
+    public override string ToString()
+    {
+        if(seconds < 10)
+            return minutes + ":0" + seconds;
+
+        return minutes + ":" + seconds;
     }
 }

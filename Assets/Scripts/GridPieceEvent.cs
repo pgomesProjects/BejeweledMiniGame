@@ -22,7 +22,7 @@ public class GridPieceEvent : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (PlayerController.main.GetCanMove())
+        if (PlayerController.main.GetCanMove() && !PlayerController.main.IsMenuActive())
         {
             GameMatrix.main.SetCurrentMousePosition(GetCoords());
             if (!GameMatrix.main.pieceCurrentlySelected)
@@ -43,7 +43,7 @@ public class GridPieceEvent : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (PlayerController.main.GetCanMove())
+        if (PlayerController.main.GetCanMove() && !PlayerController.main.IsMenuActive())
         {
             GameMatrix.main.SetGemSelected(GameMatrix.main.GetGemObject(GetCoords()));
             GameMatrix.main.SetOriginalCoordsPos(GetCoords());
@@ -54,7 +54,7 @@ public class GridPieceEvent : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        if (PlayerController.main.GetCanMove())
+        if (PlayerController.main.GetCanMove() && !PlayerController.main.IsMenuActive())
         {
             GameMatrix.main.GetGemSelected().SetIsSelected(false);
 
@@ -86,7 +86,7 @@ public class GridPieceEvent : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (PlayerController.main.GetCanMove())
+        if (PlayerController.main.GetCanMove() && !PlayerController.main.IsMenuActive())
         {
             GameMatrix.main.SetCurrentMousePosition(new Vector2(-1, -1));
             if (!GameMatrix.main.pieceCurrentlySelected)
