@@ -41,3 +41,8 @@ Total Hours Spent: 23
 > Fixed Gem Spawn Bug. One Gem Asset Completed. Others In Progress
 
 Total Hours Spent: 24
+
+**4/17/22**
+> Gem Assets Finished, Achievement System Started (Does Not Save), End Session UI Created
+
+Total Hours Spent: 26
