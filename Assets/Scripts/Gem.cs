@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 
 public class Gem: MonoBehaviour
 {
+    [SerializeField] private int ID;
     [SerializeField] private int scoreValue;
     private bool isSelected;
     [SerializeField] private Vector3 previousPosition;
@@ -46,6 +47,7 @@ public class Gem: MonoBehaviour
         previousPosition = transform.position;
     }
 
+    public int GetID() { return ID; }
     public Vector3 GetPreviousPosition() { return previousPosition; }
     public void SetPreviousPosition(Vector3 position) { previousPosition = position; }
     public Vector3 GetOriginalPosition() { return originalPosition; }

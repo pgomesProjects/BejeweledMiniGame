@@ -144,4 +144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e37521a952df3e49bc2d5f4b6f97c8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ID: 3
   scoreValue: 10
+  previousPosition: {x: 0, y: 0, z: 0}
+  originalPosition: {x: 0, y: 0, z: 0}

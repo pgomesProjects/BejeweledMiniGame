@@ -30,6 +30,9 @@ public class GemSpawnerManager : MonoBehaviour
     private float spawnTimer = 0.75f;
     private float currentTimer = 0;
 
+    [SerializeField] private ParticleSystem explosionParticle;
+    [SerializeField] private Color[] gemColors;
+
     private void Start()
     {
         allGemSpawners = GetComponentsInChildren<GemSpawner>();
@@ -179,6 +182,10 @@ public class GemSpawnerManager : MonoBehaviour
     private void DestroyMatches()
     {
         CheckForDestroyDuplicates();
+
+        int popSound = Random.Range(1, 4);
+        AudioManager audioManager = FindObjectOfType<AudioManager>();
+
         if (gemDestroyQueue.Count != 0)
         {
             for (int i = 0; i < gemDestroyQueue.Count; i++)
@@ -187,12 +194,25 @@ public class GemSpawnerManager : MonoBehaviour
                 PlayerController.main.UpdateScore(GameMatrix.main.GetGemObject(gemDestroyQueue[i]).GetScoreValue());
                 //Add gem to column spawn queue
                 gemSpawnQueue[(int)gemDestroyQueue[i].y] += 1;
+                //Spawn a particle when the gem is being destroyed and color it
+                SpawnDestroyParticle(GameMatrix.main.GetGemObject(gemDestroyQueue[i]));
                 Destroy(GameMatrix.main.GetGemObject(gemDestroyQueue[i]).gameObject);
+                if(audioManager != null)
+                {
+                    audioManager.PlayOneShot("Pop" + popSound, PlayerPrefs.GetFloat("SFXVolume", 0.5f));
+                }
                 GameMatrix.main.SetGemObject(gemDestroyQueue[i], null);
             }
 
             gemDestroyQueue.Clear();
         }
+    }
+
+    private void SpawnDestroyParticle(Gem currentGem)
+    {
+        ParticleSystem currentParticle = Instantiate(explosionParticle, currentGem.gameObject.transform.position, Quaternion.identity);
+        ParticleSystem.MainModule particleSettings = currentParticle.main;
+        particleSettings.startColor = gemColors[currentGem.GetID()];
     }
 
     IEnumerator SpawnQueue()

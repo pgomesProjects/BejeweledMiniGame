@@ -5,6 +5,7 @@ using UnityEngine;
 public class AudioManager : MonoBehaviour
 {
 
+    public AudioMixerGroup bgmMixer, sfxMixer;
     public Sound[] sounds;
 
     public static AudioManager instance;
@@ -26,6 +27,19 @@ public class AudioManager : MonoBehaviour
 
             s.source.pitch = s.pitch;
             s.source.loop = s.loop;
+
+            //If the sound does not loop, treat as a sound effect and give it a SFX audio mixer
+            if (!s.loop)
+            {
+                if(sfxMixer != null)
+                    s.source.outputAudioMixerGroup = sfxMixer;
+            }
+            //If the sound loops, treat as background music and give it a BGM audio mixer
+            else
+            {
+                if(bgmMixer != null)
+                    s.source.outputAudioMixerGroup = bgmMixer;
+            }
         }
     }
 
@@ -33,6 +47,13 @@ public class AudioManager : MonoBehaviour
     {
         Sound s = Array.Find(sounds, sound => sound.name == name);
         s.source.Play();
+        s.source.volume = audioVol;
+    }
+
+    public void PlayOneShot(string name, float audioVol)
+    {
+        Sound s = Array.Find(sounds, sound => sound.name == name);
+        s.source.PlayOneShot(s.clip);
         s.source.volume = audioVol;
     }
 

@@ -1394,6 +1394,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2df902f6b6e7ff4f919904b33ff7dd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bgmMixer: {fileID: 5802316482864546721, guid: b344f9b7b2227db408116ba5b9a3e6d5, type: 2}
+  sfxMixer: {fileID: 4279340188021939522, guid: cd100e0035cd37440801fadbe7889377, type: 2}
   sounds:
   - name: Titlescreen
     clip: {fileID: 8300000, guid: 9836b3ccd2557d347abc9da951e399bf, type: 3}
@@ -1414,6 +1416,21 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 4336228ab2ffa3340a5b48b1ddecacbf, type: 3}
     pitch: 1
     loop: 1
+    source: {fileID: 0}
+  - name: Pop1
+    clip: {fileID: 8300000, guid: 3c1cc73e2d388e44ea7cca8b6a286bc8, type: 3}
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Pop2
+    clip: {fileID: 8300000, guid: daa63ce10f5d6814d85f8a84469af8f9, type: 3}
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Pop3
+    clip: {fileID: 8300000, guid: aaab3a7dd10744f4f813ecf70c06b092, type: 3}
+    pitch: 1
+    loop: 0
     source: {fileID: 0}
 --- !u!1 &569737804
 GameObject:
