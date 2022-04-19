@@ -46,3 +46,8 @@ Total Hours Spent: 24
 > Gem Assets Finished, Achievement System Started (Does Not Save), End Session UI Created
 
 Total Hours Spent: 26
+
+**4/18/22**
+> Particle On Destroy System Created, Audio Mixers Added, Pop SFX Added, Clara Portrait Completed
+
+Total Hours Spent: 29
