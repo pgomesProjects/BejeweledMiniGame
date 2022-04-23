@@ -27,8 +27,11 @@ public class GemSpawnerManager : MonoBehaviour
 
     private List<Vector2> gemDestroyQueue;
     private int[] gemSpawnQueue;
-    private float spawnTimer = 0.75f;
+    //private float spawnTimer = 0.75f;
     private float currentTimer = 0;
+
+    [SerializeField] private float gemSpawnDelayOnStart;
+    [SerializeField] private float gemSpawnDelay;
 
     [SerializeField] private ParticleSystem explosionParticle;
     [SerializeField] private Color[] gemColors;
@@ -49,9 +52,9 @@ public class GemSpawnerManager : MonoBehaviour
             {
                 allGemSpawners[j].SpawnGemStart();
             }
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(gemSpawnDelayOnStart);
         }
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(gemSpawnDelayOnStart);
 
         StartCoroutine(CheckForMatches());
     }
@@ -77,7 +80,7 @@ public class GemSpawnerManager : MonoBehaviour
             {
                 Debug.Log("Gem Array Object: " + i);
             }*/
-            currentTimer = spawnTimer;
+            currentTimer = gemSpawnDelay + 0.25f;
             while(currentTimer > 0)
             {
                 //Debug.Log("Current Timer: " + currentTimer);
@@ -228,8 +231,8 @@ public class GemSpawnerManager : MonoBehaviour
                 }
             }
 
-            yield return new WaitForSeconds(0.5f);
-            currentTimer = spawnTimer;
+            yield return new WaitForSeconds(gemSpawnDelay);
+            currentTimer = gemSpawnDelay + 0.1f;
         }
 
         yield return null;

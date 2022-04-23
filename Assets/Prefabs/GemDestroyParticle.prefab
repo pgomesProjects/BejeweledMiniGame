@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7656798224193124023}
   - component: {fileID: 7656798224193124025}
   - component: {fileID: 7656798224193124022}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: GemDestroyParticle
   m_TagString: Untagged
   m_Icon: {fileID: 0}

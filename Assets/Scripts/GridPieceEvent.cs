@@ -35,7 +35,7 @@ public class GridPieceEvent : MonoBehaviour, IPointerEnterHandler, IPointerExitH
                 //If the grid piece is a valid move and is not the gem selected piece, swap places with them
                 if (isValidPiece)
                 {
-                    GameMatrix.main.SwapPieces(GetCoords());
+                    GameMatrix.main.SwapPieces(GetCoords(), true);
                 }
             }
         }

@@ -9,7 +9,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI personalBestText;
     [SerializeField] private int numberOfTracks = 3;
 
-    
     private bool canMove;
     private bool menuActive;
     private bool hasHighScore;

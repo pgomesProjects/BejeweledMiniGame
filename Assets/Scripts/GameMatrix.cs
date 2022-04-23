@@ -190,7 +190,7 @@ public class GameMatrix : MonoBehaviour
         gemObjects[(int)coords.x, (int)coords.y] = gemValue;
     }
 
-    public void SwapPieces(Vector3 selectedPiece)
+    public void SwapPieces(Vector3 selectedPiece, bool playAnimation)
     {
         //Debug.Log("Swap Pieces!");
         //Debug.Log("First: " + gemObjects[(int)previousSelectedPiece.x, (int)previousSelectedPiece.y]);
@@ -199,8 +199,25 @@ public class GameMatrix : MonoBehaviour
         Gem temp = gemObjects[(int)previousSelectedPiece.x, (int)previousSelectedPiece.y];
         Vector3 tempPos = gemObjects[(int)previousSelectedPiece.x, (int)previousSelectedPiece.y].transform.position;
 
-        gemObjects[(int)previousSelectedPiece.x, (int)previousSelectedPiece.y].transform.position = gemObjects[(int)selectedPiece.x, (int)selectedPiece.y].transform.position;
-        gemObjects[(int)selectedPiece.x, (int)selectedPiece.y].transform.position = tempPos;
+        //If the swap animation should be played, use the coroutine to swap the pieces
+        if (playAnimation)
+        {
+            float swapTime = 0.05f;
+
+            StartCoroutine(MovePiece(gemObjects[(int)previousSelectedPiece.x, (int)previousSelectedPiece.y].gameObject,
+                gemObjects[(int)previousSelectedPiece.x, (int)previousSelectedPiece.y].transform.position,
+                gemObjects[(int)selectedPiece.x, (int)selectedPiece.y].transform.position, swapTime));
+
+            StartCoroutine(MovePiece(gemObjects[(int)selectedPiece.x, (int)selectedPiece.y].gameObject,
+                gemObjects[(int)selectedPiece.x, (int)selectedPiece.y].transform.position, tempPos, swapTime));
+        }
+        //If not, just immediately set their positions
+        else
+        {
+            gemObjects[(int)previousSelectedPiece.x, (int)previousSelectedPiece.y].transform.position = gemObjects[(int)selectedPiece.x, (int)selectedPiece.y].transform.position;
+            gemObjects[(int)selectedPiece.x, (int)selectedPiece.y].transform.position = tempPos;
+        }
+
         gemObjects[(int)previousSelectedPiece.x, (int)previousSelectedPiece.y] = gemObjects[(int)selectedPiece.x, (int)selectedPiece.y];
         gemObjects[(int)selectedPiece.x, (int)selectedPiece.y] = temp;
 
@@ -208,7 +225,7 @@ public class GameMatrix : MonoBehaviour
         //Debug.Log("Swapped Second: " + gemObjects[(int)selectedPiece.x, (int)selectedPiece.y]);
     }
 
-    public void SwapPieces(Vector3 selectedPiece, Vector3 otherPiece)
+    public void SwapPieces(Vector3 selectedPiece, Vector3 otherPiece, bool playAnimation)
     {
         Debug.Log("Swap Pieces!");
         Debug.Log("First: " + gemObjects[(int)otherPiece.x, (int)otherPiece.y]);
@@ -217,13 +234,50 @@ public class GameMatrix : MonoBehaviour
         Gem temp = gemObjects[(int)otherPiece.x, (int)otherPiece.y];
         Vector3 tempPos = gemObjects[(int)otherPiece.x, (int)otherPiece.y].transform.position;
 
-        gemObjects[(int)otherPiece.x, (int)otherPiece.y].transform.position = gemObjects[(int)selectedPiece.x, (int)selectedPiece.y].transform.position;
-        gemObjects[(int)selectedPiece.x, (int)selectedPiece.y].transform.position = tempPos;
+        //If the swap animation should be played, use the coroutine to swap the pieces
+        if (playAnimation)
+        {
+            float swapTime = 0.05f;
+
+            StartCoroutine(MovePiece(gemObjects[(int)otherPiece.x, (int)otherPiece.y].gameObject,
+                gemObjects[(int)otherPiece.x, (int)otherPiece.y].transform.position,
+                gemObjects[(int)selectedPiece.x, (int)selectedPiece.y].transform.position, swapTime));
+
+            StartCoroutine(MovePiece(gemObjects[(int)selectedPiece.x, (int)selectedPiece.y].gameObject,
+                gemObjects[(int)selectedPiece.x, (int)selectedPiece.y].transform.position, tempPos, swapTime));
+        }
+        //If not, just immediately set their positions
+        else
+        {
+            gemObjects[(int)otherPiece.x, (int)otherPiece.y].transform.position = gemObjects[(int)selectedPiece.x, (int)selectedPiece.y].transform.position;
+            gemObjects[(int)selectedPiece.x, (int)selectedPiece.y].transform.position = tempPos;
+        }
+
         gemObjects[(int)otherPiece.x, (int)otherPiece.y] = gemObjects[(int)selectedPiece.x, (int)selectedPiece.y];
         gemObjects[(int)selectedPiece.x, (int)selectedPiece.y] = temp;
 
         Debug.Log("Swapped First: " + gemObjects[(int)otherPiece.x, (int)otherPiece.y]);
         Debug.Log("Swapped Second: " + gemObjects[(int)selectedPiece.x, (int)selectedPiece.y]);
+    }
+
+    IEnumerator MovePiece(GameObject gemPiece, Vector3 startPos, Vector3 endPos, float timeSeconds)
+    {
+        float length = Vector3.Distance(startPos, endPos);
+        float startTime = Time.time;
+        float lerpSpeed = length / timeSeconds;
+
+        float distanceCovered = (Time.time - startTime) * lerpSpeed;
+        float progress = distanceCovered / length;
+
+        while (progress < 1)
+        {
+            distanceCovered = (Time.time - startTime) * lerpSpeed;
+            progress = distanceCovered / length;
+            gemPiece.transform.position = Vector3.Slerp(startPos, endPos, progress);
+            yield return null;
+        }
+
+        gemPiece.transform.position = endPos;
     }
 
     public Vector2 GetOriginalCoordsPos()
@@ -251,13 +305,13 @@ public class GameMatrix : MonoBehaviour
                     //Move up
                     if (startingPosition.x > endingPosition.x)
                     {
-                        SwapPieces(startingPosition, new Vector2(startingPosition.x - 1, startingPosition.y));
+                        SwapPieces(startingPosition, new Vector2(startingPosition.x - 1, startingPosition.y), false);
                         startingPosition.x -= 1;
                     }
                     //Move down
                     else if (startingPosition.x < endingPosition.x)
                     {
-                        SwapPieces(startingPosition, new Vector2(startingPosition.x + 1, startingPosition.y));
+                        SwapPieces(startingPosition, new Vector2(startingPosition.x + 1, startingPosition.y), false);
                         startingPosition.x += 1;
                     }
                 }
@@ -271,13 +325,13 @@ public class GameMatrix : MonoBehaviour
                     //Move left
                     if (startingPosition.y > endingPosition.y)
                     {
-                        SwapPieces(startingPosition, new Vector2(startingPosition.x, startingPosition.y - 1));
+                        SwapPieces(startingPosition, new Vector2(startingPosition.x, startingPosition.y - 1), false);
                         startingPosition.y -= 1;
                     }
                     //Move right
                     else if(startingPosition.y < endingPosition.y)
                     {
-                        SwapPieces(startingPosition, new Vector2(startingPosition.x, startingPosition.y + 1));
+                        SwapPieces(startingPosition, new Vector2(startingPosition.x, startingPosition.y + 1), false);
                         startingPosition.y += 1;
                     }
                     Debug.Log("New Starting Pos: " + startingPosition);
