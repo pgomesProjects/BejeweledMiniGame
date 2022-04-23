@@ -51,3 +51,8 @@ Total Hours Spent: 26
 > Particle On Destroy System Created, Audio Mixers Added, Pop SFX Added, Clara Portrait Completed
 
 Total Hours Spent: 29
+
+**4/22/22**
+> Fixed On Hover Sorting Layer, Added Mask For Gems To Be Viewable In, Added Swap Animations To Gems, Changed Gem Gravity and Spawn Delay, Achievements Menu In Progress
+
+Total Hours Spent: 31
