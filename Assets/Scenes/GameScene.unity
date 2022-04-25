@@ -7856,8 +7856,6 @@ MonoBehaviour:
   - {fileID: 1361927053}
   - {fileID: 2038473647}
   gemHolder: {fileID: 1680652961}
-  pieceCurrentlySelected: 0
-  hasOneMatch: 0
 --- !u!1001 &1649099980
 PrefabInstance:
   m_ObjectHideFlags: 0

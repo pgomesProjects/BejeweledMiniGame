@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,16 +13,24 @@ public class GameMatrix : MonoBehaviour
 
     public static GameMatrix main;
 
-    [HideInInspector]
-    public bool pieceCurrentlySelected;
+    internal bool pieceCurrentlySelected;
+
     private Gem currentGemSelected;
     private Vector2 currentSelectedPiece = new Vector2(-1, -1);
     private Vector2 originalSelectCoords = new Vector2(-1, -1);
     private Vector2 previousSelectedPiece = new Vector2(-1, -1);
     private Vector2 currentMousePos = new Vector2(-1, -1);
 
-    [HideInInspector]
-    public bool hasOneMatch = false;
+    internal bool hasOneMatch = false;
+    internal bool isSwapActive = true;
+
+    private IEnumerator firstGemSwap;
+    private IEnumerator secondGemSwap;
+
+    private Gem[] swapGemPieces = new Gem[2];
+    private Queue<Action> swapQueue;
+    private float swapTime = 0.03f;
+    private float currentSwapTimer;
 
     private void Awake()
     {
@@ -34,6 +43,8 @@ public class GameMatrix : MonoBehaviour
     void Start()
     {
         pieceCurrentlySelected = false;
+        isSwapActive = false;
+        swapQueue = new Queue<Action>();
         gemSpawnerManager = FindObjectOfType<GemSpawnerManager>();
         InitializeGridEventsArray();
     }
@@ -193,23 +204,31 @@ public class GameMatrix : MonoBehaviour
     public void SwapPieces(Vector3 selectedPiece, bool playAnimation)
     {
         //Debug.Log("Swap Pieces!");
-        //Debug.Log("First: " + gemObjects[(int)previousSelectedPiece.x, (int)previousSelectedPiece.y]);
-        //Debug.Log("Second: " + gemObjects[(int)selectedPiece.x, (int)selectedPiece.y]);
+        Debug.Log("First: " + gemObjects[(int)previousSelectedPiece.x, (int)previousSelectedPiece.y]);
+        Debug.Log("Second: " + gemObjects[(int)selectedPiece.x, (int)selectedPiece.y]);
         //Swap routine for gem pieces
         Gem temp = gemObjects[(int)previousSelectedPiece.x, (int)previousSelectedPiece.y];
         Vector3 tempPos = gemObjects[(int)previousSelectedPiece.x, (int)previousSelectedPiece.y].transform.position;
 
+        swapGemPieces[0] = gemObjects[(int)previousSelectedPiece.x, (int)previousSelectedPiece.y];
+        swapGemPieces[1] = gemObjects[(int)selectedPiece.x, (int)selectedPiece.y];
+
         //If the swap animation should be played, use the coroutine to swap the pieces
         if (playAnimation)
         {
+            isSwapActive = true;
             float swapTime = 0.05f;
 
-            StartCoroutine(MovePiece(gemObjects[(int)previousSelectedPiece.x, (int)previousSelectedPiece.y].gameObject,
+            firstGemSwap = MovePiece(gemObjects[(int)previousSelectedPiece.x, (int)previousSelectedPiece.y].gameObject,
                 gemObjects[(int)previousSelectedPiece.x, (int)previousSelectedPiece.y].transform.position,
-                gemObjects[(int)selectedPiece.x, (int)selectedPiece.y].transform.position, swapTime));
+                gemObjects[(int)selectedPiece.x, (int)selectedPiece.y].transform.position, swapTime);
 
-            StartCoroutine(MovePiece(gemObjects[(int)selectedPiece.x, (int)selectedPiece.y].gameObject,
-                gemObjects[(int)selectedPiece.x, (int)selectedPiece.y].transform.position, tempPos, swapTime));
+            StartCoroutine(firstGemSwap);
+
+            secondGemSwap = MovePiece(gemObjects[(int)selectedPiece.x, (int)selectedPiece.y].gameObject,
+                gemObjects[(int)selectedPiece.x, (int)selectedPiece.y].transform.position, tempPos, swapTime);
+
+            StartCoroutine(secondGemSwap);
         }
         //If not, just immediately set their positions
         else
@@ -217,9 +236,9 @@ public class GameMatrix : MonoBehaviour
             gemObjects[(int)previousSelectedPiece.x, (int)previousSelectedPiece.y].transform.position = gemObjects[(int)selectedPiece.x, (int)selectedPiece.y].transform.position;
             gemObjects[(int)selectedPiece.x, (int)selectedPiece.y].transform.position = tempPos;
         }
-
         gemObjects[(int)previousSelectedPiece.x, (int)previousSelectedPiece.y] = gemObjects[(int)selectedPiece.x, (int)selectedPiece.y];
         gemObjects[(int)selectedPiece.x, (int)selectedPiece.y] = temp;
+        isSwapActive = false;
 
         //Debug.Log("Swapped First: " + gemObjects[(int)previousSelectedPiece.x, (int)previousSelectedPiece.y]);
         //Debug.Log("Swapped Second: " + gemObjects[(int)selectedPiece.x, (int)selectedPiece.y]);
@@ -227,37 +246,48 @@ public class GameMatrix : MonoBehaviour
 
     public void SwapPieces(Vector3 selectedPiece, Vector3 otherPiece, bool playAnimation)
     {
-        Debug.Log("Swap Pieces!");
-        Debug.Log("First: " + gemObjects[(int)otherPiece.x, (int)otherPiece.y]);
-        Debug.Log("Second: " + gemObjects[(int)selectedPiece.x, (int)selectedPiece.y]);
+        //Debug.Log("Swap Pieces!");
+        //Debug.Log("First: " + gemObjects[(int)otherPiece.x, (int)otherPiece.y]);
+        //Debug.Log("Second: " + gemObjects[(int)selectedPiece.x, (int)selectedPiece.y]);
+
+        Debug.Log("First: (" + (int)otherPiece.x + "," + (int)otherPiece.y + ") | Second: (" + (int)selectedPiece.x + "," + (int)selectedPiece.y + ")");
+
         //Swap routine for gem pieces
         Gem temp = gemObjects[(int)otherPiece.x, (int)otherPiece.y];
         Vector3 tempPos = gemObjects[(int)otherPiece.x, (int)otherPiece.y].transform.position;
 
+        swapGemPieces[0] = gemObjects[(int)otherPiece.x, (int)otherPiece.y];
+        swapGemPieces[1] = gemObjects[(int)selectedPiece.x, (int)selectedPiece.y];
+
         //If the swap animation should be played, use the coroutine to swap the pieces
         if (playAnimation)
         {
-            float swapTime = 0.05f;
+            isSwapActive = true;
 
-            StartCoroutine(MovePiece(gemObjects[(int)otherPiece.x, (int)otherPiece.y].gameObject,
+            firstGemSwap = MovePiece(gemObjects[(int)otherPiece.x, (int)otherPiece.y].gameObject,
                 gemObjects[(int)otherPiece.x, (int)otherPiece.y].transform.position,
-                gemObjects[(int)selectedPiece.x, (int)selectedPiece.y].transform.position, swapTime));
+                gemObjects[(int)selectedPiece.x, (int)selectedPiece.y].transform.position, swapTime);
 
-            StartCoroutine(MovePiece(gemObjects[(int)selectedPiece.x, (int)selectedPiece.y].gameObject,
-                gemObjects[(int)selectedPiece.x, (int)selectedPiece.y].transform.position, tempPos, swapTime));
+            StartCoroutine(firstGemSwap);
+
+            secondGemSwap = MovePiece(gemObjects[(int)selectedPiece.x, (int)selectedPiece.y].gameObject,
+                gemObjects[(int)selectedPiece.x, (int)selectedPiece.y].transform.position, tempPos, swapTime);
+
+            StartCoroutine(secondGemSwap);
         }
         //If not, just immediately set their positions
         else
         {
             gemObjects[(int)otherPiece.x, (int)otherPiece.y].transform.position = gemObjects[(int)selectedPiece.x, (int)selectedPiece.y].transform.position;
             gemObjects[(int)selectedPiece.x, (int)selectedPiece.y].transform.position = tempPos;
+            isSwapActive = false;
         }
 
         gemObjects[(int)otherPiece.x, (int)otherPiece.y] = gemObjects[(int)selectedPiece.x, (int)selectedPiece.y];
         gemObjects[(int)selectedPiece.x, (int)selectedPiece.y] = temp;
 
-        Debug.Log("Swapped First: " + gemObjects[(int)otherPiece.x, (int)otherPiece.y]);
-        Debug.Log("Swapped Second: " + gemObjects[(int)selectedPiece.x, (int)selectedPiece.y]);
+        //Debug.Log("Swapped First: " + gemObjects[(int)otherPiece.x, (int)otherPiece.y]);
+        //Debug.Log("Swapped Second: " + gemObjects[(int)selectedPiece.x, (int)selectedPiece.y]);
     }
 
     IEnumerator MovePiece(GameObject gemPiece, Vector3 startPos, Vector3 endPos, float timeSeconds)
@@ -277,6 +307,7 @@ public class GameMatrix : MonoBehaviour
             yield return null;
         }
 
+        isSwapActive = false;
         gemPiece.transform.position = endPos;
     }
 
@@ -288,6 +319,29 @@ public class GameMatrix : MonoBehaviour
     public void SetOriginalCoordsPos(Vector2 coords)
     {
         originalSelectCoords = coords;
+    }
+
+    public void AddSwapToQueue(Action swapAction)
+    {
+        swapQueue.Enqueue(swapAction);
+    }
+
+    private void Update()
+    {
+        //If there's a swap in the swap animation queue
+        if(swapQueue.Count != 0)
+        {
+            if(currentSwapTimer < 0)
+            {
+                Debug.Log("Swap!");
+                swapQueue.Dequeue().Invoke();
+                currentSwapTimer = swapTime;
+            }
+            else
+            {
+                currentSwapTimer -= Time.deltaTime;
+            }
+        }
     }
 
     public void ResetSwap(Vector3 startingPosition, Vector3 endingPosition)

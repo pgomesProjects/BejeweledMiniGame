@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -35,7 +36,10 @@ public class GridPieceEvent : MonoBehaviour, IPointerEnterHandler, IPointerExitH
                 //If the grid piece is a valid move and is not the gem selected piece, swap places with them
                 if (isValidPiece)
                 {
-                    GameMatrix.main.SwapPieces(GetCoords(), true);
+                    Vector3 currentPreviousSelected = GameMatrix.main.GetPreviousSelectedPiece();
+                    Action swap = () => GameMatrix.main.SwapPieces(GetCoords(), currentPreviousSelected, true);
+                    Debug.Log("First: (" + (int)currentPreviousSelected.x + "," + (int)currentPreviousSelected.y + ") | Second: (" + (int)GetCoords().x + "," + (int)GetCoords().y + ")");
+                    GameMatrix.main.AddSwapToQueue(swap);
                 }
             }
         }

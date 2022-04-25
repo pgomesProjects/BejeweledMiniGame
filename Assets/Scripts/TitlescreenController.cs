@@ -9,7 +9,7 @@ public class TitlescreenController : MonoBehaviour
 {
     [SerializeField] private GameObject[] menuStates;
 
-    private enum MenuState { TITLESCREEN, HOWTOPLAY, SETTINGS };
+    private enum MenuState { TITLESCREEN, HOWTOPLAY, ACHIEVEMENTS, SETTINGS };
     private MenuState currentMenuState;
 
     [SerializeField] private Slider[] volumeSliders;

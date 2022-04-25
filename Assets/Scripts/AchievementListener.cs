@@ -12,23 +12,64 @@ public class AchievementListener : MonoBehaviour
     void Start()
     {
         StartCoroutine(PointsAfterOneMinuteAchievement(60));
+        StartCoroutine(AchievementAfterTenMinutes());
+        StartCoroutine(AchievementAfterHour());
     }
 
     IEnumerator PointsAfterOneMinuteAchievement(float secondsUntilExpire)
     {
         float currentTime = 0;
-        bool achieved = false;
+        bool achieved = PlayerPrefs.GetInt("AchievementID0") == 1;
+
         while(currentTime < secondsUntilExpire && !achieved)
         {
             currentTime += Time.deltaTime;
 
             if(PlayerController.main.GetPlayerScore() >= 1000)
             {
-                StartCoroutine(ShowAchievement("Achievement Got: Speed Matcher"));
+                StartCoroutine(ShowAchievement("Achievement Unlocked: Speed Matcher"));
+                PlayerPrefs.SetInt("AchievementID0", 1);
                 achieved = true;
             }
 
             yield return null;
+        }
+    }
+
+    IEnumerator AchievementAfterTenMinutes()
+    {
+        float currentTime = 0;
+        bool achieved = PlayerPrefs.GetInt("AchievementID2") == 1;
+
+        while (currentTime < 600 && !achieved)
+        {
+            currentTime += Time.deltaTime;
+            yield return null;
+        }
+
+        if (!achieved)
+        {
+            StartCoroutine(ShowAchievement("Achievement Unlocked: A Nice Cup Of Coffee"));
+            PlayerPrefs.SetInt("AchievementID2", 1);
+        }
+    }
+
+
+    IEnumerator AchievementAfterHour()
+    {
+        float currentTime = 0;
+        bool achieved = PlayerPrefs.GetInt("AchievementID5") == 1;
+
+        while (currentTime < 3600 && !achieved)
+        {
+            currentTime += Time.deltaTime;
+            yield return null;
+        }
+
+        if (!achieved)
+        {
+            StartCoroutine(ShowAchievement("Achievement Unlocked: Mindless Addict"));
+            PlayerPrefs.SetInt("AchievementID5", 1);
         }
     }
 
@@ -40,11 +81,5 @@ public class AchievementListener : MonoBehaviour
         yield return new WaitForSeconds(3);
 
         achievementObject.SetActive(false);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

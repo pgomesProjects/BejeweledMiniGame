@@ -6,7 +6,7 @@ using TMPro;
 public class GameTimer : MonoBehaviour
 {
     private TextMeshProUGUI timerText;
-    private int minutes, seconds;
+    private int hours, minutes, seconds;
 
     private void Awake()
     {
@@ -27,7 +27,13 @@ public class GameTimer : MonoBehaviour
 
             seconds++;
 
-            if(seconds == 60)
+            if (minutes == 60)
+            {
+                minutes = 0;
+                hours++;
+            }
+
+            if (seconds == 60)
             {
                 seconds = 0;
                 minutes++;
@@ -39,7 +45,15 @@ public class GameTimer : MonoBehaviour
 
     public override string ToString()
     {
-        if(seconds < 10)
+        if (hours > 0)
+        {
+            if(minutes < 10)
+                return hours + ":0" + minutes + ":0" + seconds;
+            else
+                return hours + ":" + minutes + ":0" + seconds;
+        }
+
+        if (seconds < 10)
             return minutes + ":0" + seconds;
 
         return minutes + ":" + seconds;
