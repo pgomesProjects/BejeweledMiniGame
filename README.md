@@ -56,3 +56,8 @@ Total Hours Spent: 29
 > Fixed On Hover Sorting Layer, Added Mask For Gems To Be Viewable In, Added Swap Animations To Gems, Changed Gem Gravity and Spawn Delay, Achievements Menu In Progress
 
 Total Hours Spent: 31
+
+**4/24/22**
+> Fixed Swap Gem Animation Bugs, Added Dynamic Scrollable Achievement Menu, 3 Working Achievements Added
+
+Total Hours Spent: 35
