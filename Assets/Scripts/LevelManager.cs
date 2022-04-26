@@ -37,7 +37,18 @@ public class LevelManager : MonoBehaviour
 
         timeStats.text = "Time Spent: " + timer.ToString();
 
+        CheckForEndSessionAchievements();
+
         gameStatsMenu.SetActive(true);
+    }
+
+    private void CheckForEndSessionAchievements()
+    {
+        //Achievement for 0 points
+        if (PlayerController.main.GetPlayerScore() == 0 && PlayerPrefs.GetInt("AchievementID6") != 1)
+        {
+            AchievementListener.Instance.UnlockAchievement(6);
+        }
     }
 
     public void CancelEndSession()
@@ -50,7 +61,12 @@ public class LevelManager : MonoBehaviour
     public void BackToTitle()
     {
         if(FindObjectOfType<AudioManager>() != null)
-            FindObjectOfType<AudioManager>().Stop("Track" + PlayerController.main.currentTrack);
+        {
+            if(FindObjectOfType<AudioManager>().IsPlaying("TrackAmongUs"))
+                FindObjectOfType<AudioManager>().Stop("TrackAmongUs");
+            else
+                FindObjectOfType<AudioManager>().Stop("Track" + PlayerController.main.currentTrack);
+        }
         SceneManager.LoadScene("Titlescreen");
     }
 

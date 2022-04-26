@@ -6,7 +6,7 @@ using TMPro;
 public class GameTimer : MonoBehaviour
 {
     private TextMeshProUGUI timerText;
-    private int hours, minutes, seconds;
+    private int hours = 0, minutes = 0, seconds = 0;
 
     private void Awake()
     {
@@ -15,6 +15,9 @@ public class GameTimer : MonoBehaviour
 
     private void Start()
     {
+        //Display beginning time
+        timerText.text = "Time: " + ToString();
+
         StartCoroutine(ActiveTimer());
     }
 
@@ -27,19 +30,40 @@ public class GameTimer : MonoBehaviour
 
             seconds++;
 
-            if (minutes == 60)
-            {
-                minutes = 0;
-                hours++;
-            }
-
             if (seconds == 60)
             {
                 seconds = 0;
                 minutes++;
             }
 
+            if (minutes == 60)
+            {
+                minutes = 0;
+                hours++;
+            }
+
+            //Check for achievements related to session time
+            CheckTimerAchievements();
+
+            //Display time
             timerText.text = "Time: " + ToString();
+        }
+    }
+
+    private void CheckTimerAchievements()
+    {
+        //Achievement for 10 Minutes
+        if (PlayerPrefs.GetInt("AchievementID2") != 1 && minutes >= 10)
+        {
+            if (AchievementListener.Instance != null)
+                AchievementListener.Instance.UnlockAchievement(2);
+        }
+
+        //Achievement for 1 hour
+        if (PlayerPrefs.GetInt("AchievementID5") != 1 && hours >= 1)
+        {
+            if (AchievementListener.Instance != null)
+                AchievementListener.Instance.UnlockAchievement(5);
         }
     }
 

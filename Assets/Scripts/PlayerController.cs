@@ -39,21 +39,61 @@ public class PlayerController : MonoBehaviour
         if(FindObjectOfType<AudioManager>() != null)
         {
             currentTrack = Random.Range(1, numberOfTracks + 1);
-            FindObjectOfType<AudioManager>().Play("Track" + currentTrack, PlayerPrefs.GetFloat("BGMVolume", 0.5f));
+
+            //5% chance to get easter egg soundtrack
+            if(Random.value < 0.05f)
+            {
+                FindObjectOfType<AudioManager>().Play("TrackAmongUs", PlayerPrefs.GetFloat("BGMVolume", 0.5f));
+                EasterEggAchievement();
+            }
+            else
+            {
+                FindObjectOfType<AudioManager>().Play("Track" + currentTrack, PlayerPrefs.GetFloat("BGMVolume", 0.5f));
+            }
+        }
+    }
+
+    private void EasterEggAchievement()
+    {
+        if(PlayerPrefs.GetInt("AchievementID4") != 1 && AchievementListener.Instance != null)
+        {
+            AchievementListener.Instance.UnlockAchievement(4);
         }
     }
 
     public void UpdateScore(int score)
     {
-        playerScore += score;
-        scoreText.text = "Score: " + playerScore;
-
-        //If the current score is greater than the personal best, update the personal best score
-        if(playerScore > PlayerPrefs.GetInt("PersonalBest"))
+        //Update score while the game is active
+        if (isGameActive)
         {
-            hasHighScore = true;
-            PlayerPrefs.SetInt("PersonalBest", playerScore);
-            personalBestText.text = "Personal Best: " + PlayerPrefs.GetInt("PersonalBest");
+            playerScore += score;
+            scoreText.text = "Score: " + playerScore;
+
+            if (AchievementListener.Instance != null)
+                CheckForAchievementScore(playerScore);
+
+            //If the current score is greater than the personal best, update the personal best score
+            if (playerScore > PlayerPrefs.GetInt("PersonalBest"))
+            {
+                hasHighScore = true;
+                PlayerPrefs.SetInt("PersonalBest", playerScore);
+                personalBestText.text = "Personal Best: " + PlayerPrefs.GetInt("PersonalBest");
+            }
+        }
+    }
+
+    private void CheckForAchievementScore(int score)
+    {
+        //Achievement for 2,500 points
+        if (score >= 2500 && PlayerPrefs.GetInt("AchievementID1") != 1)
+        {
+            AchievementListener.Instance.UnlockAchievement(1);
+        }
+
+        //Achievement for 10,000 points
+        if (score >= 10000 && PlayerPrefs.GetInt("AchievementID3") != 1)
+        {
+            AchievementListener.Instance.UnlockAchievement(3);
         }
     }
 

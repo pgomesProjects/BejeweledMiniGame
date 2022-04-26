@@ -200,7 +200,7 @@ public class GemSpawnerManager : MonoBehaviour
                 //Spawn a particle when the gem is being destroyed and color it
                 SpawnDestroyParticle(GameMatrix.main.GetGemObject(gemDestroyQueue[i]));
                 Destroy(GameMatrix.main.GetGemObject(gemDestroyQueue[i]).gameObject);
-                if(audioManager != null)
+                if(audioManager != null && PlayerController.main.IsGameActive())
                 {
                     audioManager.PlayOneShot("Pop" + popSound, PlayerPrefs.GetFloat("SFXVolume", 0.5f));
                 }
