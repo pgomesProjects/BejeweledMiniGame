@@ -61,3 +61,8 @@ Total Hours Spent: 31
 > Fixed Swap Gem Animation Bugs, Added Dynamic Scrollable Achievement Menu, 3 Working Achievements Added
 
 Total Hours Spent: 35
+
+**4/24/22**
+> Achievements System Done, Clear Data System Done, Title Screen Assets Done, Ready For Beta
+
+Total Hours Spent: 37.5
