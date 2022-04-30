@@ -53,8 +53,7 @@ public class AudioManager : MonoBehaviour
     public void PlayOneShot(string name, float audioVol)
     {
         Sound s = Array.Find(sounds, sound => sound.name == name);
-        s.source.PlayOneShot(s.clip);
-        s.source.volume = audioVol;
+        s.source.PlayOneShot(s.clip, audioVol);
     }
 
     public bool IsPlaying(string name) //Checks to see if the audio track is still playing

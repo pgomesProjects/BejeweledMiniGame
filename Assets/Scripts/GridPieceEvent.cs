@@ -41,6 +41,11 @@ public class GridPieceEvent : MonoBehaviour, IPointerEnterHandler, IPointerExitH
                     Debug.Log("First: (" + (int)currentPreviousSelected.x + "," + (int)currentPreviousSelected.y + ") | Second: (" + (int)GetCoords().x + "," + (int)GetCoords().y + ")");
                     GameMatrix.main.AddSwapToQueue(swap);
                 }
+                else
+                {
+                    Debug.Log("Outside Of Bounds!");
+                    OnPointerUp(eventData);
+                }
             }
         }
     }

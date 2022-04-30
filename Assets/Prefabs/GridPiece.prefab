@@ -88,5 +88,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62f9b31ddc5d61f4396173605cdff5e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  colorOnValidMove: {r: 0.9622642, g: 0.503827, b: 0.63866156, a: 0.19607843}
-  colorOnHover: {r: 1, g: 0.8443396, b: 0.9958305, a: 0.78431374}
+  colorOnValidMove: {r: 0.9622642, g: 0.503827, b: 0.63866156, a: 0.78431374}
+  colorOnHover: {r: 1, g: 1, b: 1, a: 0.78431374}

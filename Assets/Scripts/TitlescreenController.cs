@@ -33,8 +33,8 @@ public class TitlescreenController : MonoBehaviour
         FindObjectOfType<AudioManager>().Play("Titlescreen", PlayerPrefs.GetFloat("BGMVolume", 0.5f));
         currentMenuState = MenuState.TITLESCREEN;
 
-        volumeSliders[0].value = PlayerPrefs.GetFloat("BGMVolume", 0.5f) * 10;
-        volumeSliders[1].value = PlayerPrefs.GetFloat("SFXVolume", 0.5f) * 10;
+        volumeSliders[0].value = PlayerPrefs.GetFloat("BGMVolume") * 10;
+        volumeSliders[1].value = PlayerPrefs.GetFloat("SFXVolume") * 10;
 
         allAchievementsTrophy.SetActive(AllAchievementsUnlocked());
 
