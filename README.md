@@ -66,3 +66,8 @@ Total Hours Spent: 35
 > Achievements System Done, Clear Data System Done, Title Screen Assets Done, Ready For Beta
 
 Total Hours Spent: 37.5
+
+**4/29/22**
+> UI Buttons, SFX Repeated Sound On Slider, Achievement Unlocked UI Updated, Gem Hover Updated, Swap Gem System Worked On
+
+Total Hours: 39.5
