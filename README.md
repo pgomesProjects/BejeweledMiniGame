@@ -71,3 +71,8 @@ Total Hours Spent: 37.5
 > UI Buttons, SFX Repeated Sound On Slider, Achievement Unlocked UI Updated, Gem Hover Updated, Swap Gem System Worked On
 
 Total Hours: 39.5
+
+**5/2/22**
+> Added Chain Multiplier, Achievements Updated, Hover Board UI Bug Fixed, Swap Gem System Worked On
+
+Total Hours: 42.5
