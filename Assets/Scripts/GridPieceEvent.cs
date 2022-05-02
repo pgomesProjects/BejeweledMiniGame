@@ -12,6 +12,7 @@ public class GridPieceEvent : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     [SerializeField] private Color colorOnValidMove = new Color(1, 1, 1, 1);
     [SerializeField] private Color colorOnHover = new Color(1, 1, 1, 1);
     private bool isValidPiece;
+    private bool isHovered;
 
     // Start is called before the first frame update
     void Start()
@@ -23,15 +24,13 @@ public class GridPieceEvent : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        isHovered = true;
+
         if (PlayerController.main.GetCanMove() && !PlayerController.main.IsMenuActive())
         {
             GameMatrix.main.SetCurrentMousePosition(GetCoords());
-            if (!GameMatrix.main.pieceCurrentlySelected)
-            {
-                GameMatrix.main.SetValidMovePieces(gameObject.name);
-                gridImage.color = colorOnHover;
-            }
-            else
+
+            if(GameMatrix.main.pieceCurrentlySelected)
             {
                 //If the grid piece is a valid move and is not the gem selected piece, swap places with them
                 if (isValidPiece)
@@ -44,7 +43,8 @@ public class GridPieceEvent : MonoBehaviour, IPointerEnterHandler, IPointerExitH
                 else
                 {
                     Debug.Log("Outside Of Bounds!");
-                    OnPointerUp(eventData);
+                    CheckForMoves(GameMatrix.main.GetPreviousMousePosition(), true);
+                    GameMatrix.isValidMousePointer = false;
                 }
             }
         }
@@ -54,6 +54,7 @@ public class GridPieceEvent : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     {
         if (PlayerController.main.GetCanMove() && !PlayerController.main.IsMenuActive())
         {
+            GameMatrix.isValidMousePointer = true;
             GameMatrix.main.SetGemSelected(GameMatrix.main.GetGemObject(GetCoords()));
             GameMatrix.main.SetOriginalCoordsPos(GetCoords());
             GameMatrix.main.GetGemSelected().SetIsSelected(true);
@@ -65,22 +66,30 @@ public class GridPieceEvent : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     {
         if (PlayerController.main.GetCanMove() && !PlayerController.main.IsMenuActive())
         {
+            CheckForMoves(GameMatrix.main.GetCurrentMousePosition(), GameMatrix.isValidMousePointer);
+
+            GameMatrix.main.SetOriginalCoordsPos(new Vector2(-1, -1));
+            GameMatrix.isValidMousePointer = false;
+        }
+    }
+
+    public void CheckForMoves(Vector2 mousePos, bool canSwap)
+    {
+        if(GameMatrix.main.GetGemSelected() != null)
             GameMatrix.main.GetGemSelected().SetIsSelected(false);
 
-            //Check for any matches
-            GameMatrix.main.StartMatchCheck();
-            GameMatrix.main.ClearBoardHover();
+        //Check for any matches
+        GameMatrix.main.StartMatchCheck();
+        GameMatrix.main.ClearBoardHover();
 
-            //If no matches have made made, swap the piece back to it's original position
-            if (!GameMatrix.main.hasOneMatch)
-            {
-                GameMatrix.main.ResetSwap(GameMatrix.main.GetCurrentMousePosition(), GameMatrix.main.GetOriginalCoordsPos());
-            }
-
-            GameMatrix.main.SetGemSelected(null);
-            GameMatrix.main.SetOriginalCoordsPos(new Vector2(-1, -1));
-            GameMatrix.main.pieceCurrentlySelected = false;
+        //If no matches have made made, swap the piece back to it's original position
+        if (!GameMatrix.main.hasOneMatch && canSwap)
+        {
+            GameMatrix.main.ResetSwap(mousePos, GameMatrix.main.GetOriginalCoordsPos());
         }
+
+        GameMatrix.main.SetGemSelected(null);
+        GameMatrix.main.pieceCurrentlySelected = false;
     }
 
     public void OnValidMoveEnter()
@@ -95,15 +104,18 @@ public class GridPieceEvent : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        GameMatrix.main.SetPreviousMousePosition(GetCoords());
+        isHovered = false;
+
+        if (!GameMatrix.main.pieceCurrentlySelected && !PlayerController.main.IsMenuActive())
+        {
+            GameMatrix.main.ResetValidMovePieces();
+            gridImage.color = colorDefault;
+        }
+
         if (PlayerController.main.GetCanMove() && !PlayerController.main.IsMenuActive())
         {
-            GameMatrix.main.SetCurrentMousePosition(new Vector2(-1, -1));
-            if (!GameMatrix.main.pieceCurrentlySelected)
-            {
-                GameMatrix.main.ResetValidMovePieces();
-                gridImage.color = colorDefault;
-            }
-            else
+            if(GameMatrix.main.pieceCurrentlySelected)
             {
                 if (isValidPiece)
                     GameMatrix.main.SetPreviousSelectedPiece(GetCoords());
@@ -115,6 +127,18 @@ public class GridPieceEvent : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     {
         string coords = name.Substring(name.Length - 5);
         return new Vector2(int.Parse("" + coords[1]), int.Parse("" + coords[3]));
+    }
+
+    private void Update()
+    {
+        if (PlayerController.main.GetCanMove() && !PlayerController.main.IsMenuActive())
+        {
+            if (!GameMatrix.main.pieceCurrentlySelected && isHovered)
+            {
+                GameMatrix.main.SetValidMovePieces(gameObject.name);
+                gridImage.color = colorOnHover;
+            }
+        }
     }
 
     public bool IsValidPiece() { return isValidPiece; }

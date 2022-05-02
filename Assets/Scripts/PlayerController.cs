@@ -7,7 +7,16 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private TextMeshProUGUI personalBestText;
+    [SerializeField] private GameObject chainTextObject;
+    private TextMeshProUGUI chainText;
+    private float defaultChainFontSize;
+    private CanvasGroup chainCanvasGroup;
+    private IEnumerator chainDisplayCoroutine;
+
     [SerializeField] private int numberOfTracks = 3;
+
+    [SerializeField] private float fadeInChainSeconds = 0.25f;
+    [SerializeField] private float fadeOutChainSeconds = 2;
 
     private bool canMove;
     private bool menuActive;
@@ -16,8 +25,7 @@ public class PlayerController : MonoBehaviour
 
     private int playerScore;
 
-    [HideInInspector]
-    public int currentTrack;
+    internal int currentTrack;
 
     public static PlayerController main;
 
@@ -33,6 +41,11 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
+        chainText = chainTextObject.GetComponent<TextMeshProUGUI>();
+        chainCanvasGroup = chainTextObject.GetComponent<CanvasGroup>();
+        chainCanvasGroup.alpha = 0;
+        defaultChainFontSize = chainText.fontSize;
+
         personalBestText.text = "Personal Best: " + PlayerPrefs.GetInt("PersonalBest");
 
         //Play a random track from the list of tracks
@@ -82,16 +95,55 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void DisplayChain(int multiplier)
+    {
+        if(chainDisplayCoroutine != null)
+            StopCoroutine(chainDisplayCoroutine);
+
+        chainDisplayCoroutine = ChainAnimation(multiplier);
+        StartCoroutine(chainDisplayCoroutine);
+    }
+
+    public IEnumerator ChainAnimation(int multiplier)
+    {
+        chainText.text = "Chain X" + multiplier + "!";
+        chainText.fontSize = defaultChainFontSize + (3 * multiplier);
+
+        float currentTimer = 0;
+
+        //Fade in chain animation
+        while (currentTimer < fadeInChainSeconds)
+        {
+            currentTimer += Time.deltaTime;
+            chainCanvasGroup.alpha = Mathf.Clamp01(currentTimer / fadeInChainSeconds);
+            yield return null;
+        }
+
+        chainCanvasGroup.alpha = 1;
+
+        currentTimer = 0;
+
+        //Fade out chain animation
+        while (currentTimer < fadeOutChainSeconds)
+        {
+            currentTimer += Time.deltaTime;
+            chainCanvasGroup.alpha = 1 - Mathf.Clamp01(currentTimer / fadeOutChainSeconds);
+            yield return null;
+        }
+
+        chainCanvasGroup.alpha = 0;
+    }
+
     private void CheckForAchievementScore(int score)
     {
-        //Achievement for 2,500 points
-        if (score >= 2500 && PlayerPrefs.GetInt("AchievementID1") != 1)
+        //Achievement for 25,000 points
+        if (score >= 25000 && PlayerPrefs.GetInt("AchievementID1") != 1)
         {
             AchievementListener.Instance.UnlockAchievement(1);
         }
 
-        //Achievement for 10,000 points
-        if (score >= 10000 && PlayerPrefs.GetInt("AchievementID3") != 1)
+        //Achievement for 100,000 points
+        if (score >= 100000 && PlayerPrefs.GetInt("AchievementID3") != 1)
         {
             AchievementListener.Instance.UnlockAchievement(3);
         }

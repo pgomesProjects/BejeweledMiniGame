@@ -46,12 +46,12 @@ MonoBehaviour:
   achievementItem:
   - id: 0
     name: Speed Matcher
-    description: Get 1,000 points in the first minute of a session.
+    description: Get 5,000 points in the first minute of a session.
     isUnlocked: 0
     isHidden: 0
   - id: 1
     name: Rookie Numbers
-    description: Get 2,500 points in one session.
+    description: Get 25,000 points in one session.
     isUnlocked: 0
     isHidden: 0
   - id: 2
@@ -61,7 +61,7 @@ MonoBehaviour:
     isHidden: 0
   - id: 3
     name: A Fruitful Effort
-    description: Get 10,000 points in one session.
+    description: Get 100,000 points in one session.
     isUnlocked: 0
     isHidden: 0
   - id: 4

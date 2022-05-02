@@ -14,23 +14,28 @@ public class GameMatrix : MonoBehaviour
     public static GameMatrix main;
 
     internal bool pieceCurrentlySelected;
+    internal static bool isValidMousePointer;
 
     private Gem currentGemSelected;
     private Vector2 currentSelectedPiece = new Vector2(-1, -1);
     private Vector2 originalSelectCoords = new Vector2(-1, -1);
     private Vector2 previousSelectedPiece = new Vector2(-1, -1);
     private Vector2 currentMousePos = new Vector2(-1, -1);
+    private Vector2 previousMousePos = new Vector2(-1, -1);
 
     internal bool hasOneMatch = false;
     internal bool isSwapActive = true;
+
+    internal static bool swapQueueEmpty;
 
     private IEnumerator firstGemSwap;
     private IEnumerator secondGemSwap;
 
     private Gem[] swapGemPieces = new Gem[2];
     private Queue<Action> swapQueue;
-    private float swapTime = 0.03f;
+    internal static float swapTime = 0.03f;
     private float currentSwapTimer;
+    private bool resetSwapActive;
 
     private void Awake()
     {
@@ -214,7 +219,7 @@ public class GameMatrix : MonoBehaviour
         swapGemPieces[1] = gemObjects[(int)selectedPiece.x, (int)selectedPiece.y];
 
         //If the swap animation should be played, use the coroutine to swap the pieces
-        if (playAnimation)
+        if (playAnimation && !resetSwapActive)
         {
             isSwapActive = true;
             float swapTime = 0.05f;
@@ -260,7 +265,7 @@ public class GameMatrix : MonoBehaviour
         swapGemPieces[1] = gemObjects[(int)selectedPiece.x, (int)selectedPiece.y];
 
         //If the swap animation should be played, use the coroutine to swap the pieces
-        if (playAnimation)
+        if (playAnimation && !resetSwapActive)
         {
             isSwapActive = true;
 
@@ -299,7 +304,7 @@ public class GameMatrix : MonoBehaviour
         float distanceCovered = (Time.time - startTime) * lerpSpeed;
         float progress = distanceCovered / length;
 
-        while (progress < 1)
+        while (progress < 1 && !resetSwapActive)
         {
             distanceCovered = (Time.time - startTime) * lerpSpeed;
             progress = distanceCovered / length;
@@ -328,8 +333,8 @@ public class GameMatrix : MonoBehaviour
 
     private void Update()
     {
-        //If there's a swap in the swap animation queue
-        if(swapQueue.Count != 0)
+        //If there's a swap in the swap animation queue and the reset swap action is not active
+        if(swapQueue.Count != 0 && !resetSwapActive)
         {
             if(currentSwapTimer < 0)
             {
@@ -342,57 +347,83 @@ public class GameMatrix : MonoBehaviour
                 currentSwapTimer -= Time.deltaTime;
             }
         }
+
+        if (swapQueue.Count != 0)
+            swapQueueEmpty = false;
+        else
+            swapQueueEmpty = true;
     }
 
     public void ResetSwap(Vector3 startingPosition, Vector3 endingPosition)
     {
         if(startingPosition != endingPosition)
         {
-            Debug.Log("Starting Position: " + startingPosition);
-            Debug.Log("Ending Position: " + endingPosition);
+            resetSwapActive = true;
 
-            //Reset pieces vertically
-            if(startingPosition.x != endingPosition.x)
+            StartCoroutine(WaitFrameBeforeSwap(startingPosition, endingPosition));
+        }
+    }
+
+    IEnumerator WaitFrameBeforeSwap(Vector3 startingPosition, Vector3 endingPosition)
+    {
+        //Wait one frame for the swap routines to update
+        yield return 0;
+
+        if (FindObjectOfType<AudioManager>() != null)
+            FindObjectOfType<AudioManager>().PlayOneShot("MatchCancel", PlayerPrefs.GetFloat("SFXVolume", 0.5f));
+
+        //Before resetting the swap, make sure all pieces are already swapped
+        while (swapQueue.Count != 0)
+        {
+            swapQueue.Dequeue().Invoke();
+        }
+
+        Debug.Log("Starting Position: " + startingPosition);
+        Debug.Log("Ending Position: " + endingPosition);
+
+        //Reset pieces vertically
+        if (startingPosition.x != endingPosition.x)
+        {
+            while (startingPosition.x != endingPosition.x)
             {
-                while (startingPosition.x != endingPosition.x)
+                //Move up
+                if (startingPosition.x > endingPosition.x)
                 {
-                    //Move up
-                    if (startingPosition.x > endingPosition.x)
-                    {
-                        SwapPieces(startingPosition, new Vector2(startingPosition.x - 1, startingPosition.y), false);
-                        startingPosition.x -= 1;
-                    }
-                    //Move down
-                    else if (startingPosition.x < endingPosition.x)
-                    {
-                        SwapPieces(startingPosition, new Vector2(startingPosition.x + 1, startingPosition.y), false);
-                        startingPosition.x += 1;
-                    }
+                    SwapPieces(startingPosition, new Vector2(startingPosition.x - 1, startingPosition.y), false);
+                    startingPosition.x -= 1;
                 }
-            }
-
-            //Reset pieces horizontally
-            else if (startingPosition.y != endingPosition.y)
-            {
-                while (startingPosition.y != endingPosition.y)
+                //Move down
+                else if (startingPosition.x < endingPosition.x)
                 {
-                    //Move left
-                    if (startingPosition.y > endingPosition.y)
-                    {
-                        SwapPieces(startingPosition, new Vector2(startingPosition.x, startingPosition.y - 1), false);
-                        startingPosition.y -= 1;
-                    }
-                    //Move right
-                    else if(startingPosition.y < endingPosition.y)
-                    {
-                        SwapPieces(startingPosition, new Vector2(startingPosition.x, startingPosition.y + 1), false);
-                        startingPosition.y += 1;
-                    }
-                    Debug.Log("New Starting Pos: " + startingPosition);
-                    Debug.Log("Ending Pos: " + endingPosition);
+                    SwapPieces(startingPosition, new Vector2(startingPosition.x + 1, startingPosition.y), false);
+                    startingPosition.x += 1;
                 }
             }
         }
+
+        //Reset pieces horizontally
+        else if (startingPosition.y != endingPosition.y)
+        {
+            while (startingPosition.y != endingPosition.y)
+            {
+                //Move left
+                if (startingPosition.y > endingPosition.y)
+                {
+                    SwapPieces(startingPosition, new Vector2(startingPosition.x, startingPosition.y - 1), false);
+                    startingPosition.y -= 1;
+                }
+                //Move right
+                else if (startingPosition.y < endingPosition.y)
+                {
+                    SwapPieces(startingPosition, new Vector2(startingPosition.x, startingPosition.y + 1), false);
+                    startingPosition.y += 1;
+                }
+                Debug.Log("New Starting Pos: " + startingPosition);
+                Debug.Log("Ending Pos: " + endingPosition);
+            }
+        }
+
+        resetSwapActive = false;
     }
 
     public void StartMatchCheck()
@@ -402,6 +433,8 @@ public class GameMatrix : MonoBehaviour
 
     public Vector2 GetCurrentMousePosition() { return currentMousePos; }
     public void SetCurrentMousePosition(Vector2 mousePos) { currentMousePos = mousePos; }
+    public Vector2 GetPreviousMousePosition() { return previousMousePos; }
+    public void SetPreviousMousePosition(Vector2 mousePos) { previousMousePos = mousePos; }
     public Vector3 GetPreviousSelectedPiece() { return previousSelectedPiece; }
     public void SetPreviousSelectedPiece(Vector3 selectedPiece) { previousSelectedPiece = selectedPiece; }
     public Gem[,] GetGemArray() { return gemObjects; }

@@ -36,7 +36,7 @@ public class AchievementListener : MonoBehaviour
         {
             currentTime += Time.deltaTime;
 
-            if(PlayerController.main.GetPlayerScore() >= 1000)
+            if(PlayerController.main.GetPlayerScore() >= 5000)
             {
                 UnlockAchievement(0);
                 achieved = true;

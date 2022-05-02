@@ -36,6 +36,8 @@ public class GemSpawnerManager : MonoBehaviour
     [SerializeField] private ParticleSystem explosionParticle;
     [SerializeField] private Color[] gemColors;
 
+    private int chainMultiplier;
+
     private void Start()
     {
         allGemSpawners = GetComponentsInChildren<GemSpawner>();
@@ -65,6 +67,24 @@ public class GemSpawnerManager : MonoBehaviour
         bool allMatchesMade = false;
         PlayerController.main.SetCanMove(false);
 
+        bool swapQueueNotDone = false;
+
+        chainMultiplier = 1;
+
+        //Wait for the swap queue to be empty before making matches
+        while (!GameMatrix.swapQueueEmpty)
+        {
+            swapQueueNotDone = true;
+            yield return null;
+        }
+
+        //If the swap queue was not done, wait the swap time before making matches
+        if (swapQueueNotDone)
+        {
+            yield return new WaitForSeconds(GameMatrix.swapTime);
+            swapQueueNotDone = false;
+        }
+
         //While matches can be made, detect matches
         while (!allMatchesMade)
         {
@@ -73,9 +93,19 @@ public class GemSpawnerManager : MonoBehaviour
             if (!GameMatrix.main.hasOneMatch)
             {
                 GameMatrix.main.hasOneMatch = !allMatchesMade;
-                if(GameMatrix.main.hasOneMatch)
+                if (GameMatrix.main.hasOneMatch)
                     Debug.Log("One Match Made");
+                //If no matches have been made, immediately leave the match check
+                else
+                    break;
             }
+
+            //If the chain multiplier is greater than 1, display it
+            if(chainMultiplier > 1 && !allMatchesMade)
+            {
+                PlayerController.main.DisplayChain(chainMultiplier);
+            }
+
 /*            foreach (var i in GameMatrix.main.GetGemArray())
             {
                 Debug.Log("Gem Array Object: " + i);
@@ -87,6 +117,8 @@ public class GemSpawnerManager : MonoBehaviour
                 currentTimer -= Time.deltaTime;
                 yield return null;
             }
+
+            chainMultiplier++;
         }
         PlayerController.main.SetCanMove(true);
     }
@@ -194,7 +226,7 @@ public class GemSpawnerManager : MonoBehaviour
             for (int i = 0; i < gemDestroyQueue.Count; i++)
             {
                 //Get the score of the gem and destory the spawn
-                PlayerController.main.UpdateScore(GameMatrix.main.GetGemObject(gemDestroyQueue[i]).GetScoreValue());
+                PlayerController.main.UpdateScore(GameMatrix.main.GetGemObject(gemDestroyQueue[i]).GetScoreValue() * chainMultiplier);
                 //Add gem to column spawn queue
                 gemSpawnQueue[(int)gemDestroyQueue[i].y] += 1;
                 //Spawn a particle when the gem is being destroyed and color it

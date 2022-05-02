@@ -471,6 +471,7 @@ GameObject:
   - component: {fileID: 98819423}
   - component: {fileID: 98819422}
   - component: {fileID: 98819425}
+  - component: {fileID: 98819426}
   m_Layer: 5
   m_Name: SettingsButton
   m_TagString: Untagged
@@ -605,6 +606,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hoverTextColor: {r: 1, g: 1, b: 1, a: 1}
+--- !u!114 &98819426
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 98819420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92aa7a54635ab2b42a177264448755b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverSFXName: ButtonHover
+  clickSFXName: ButtonClick
 --- !u!1 &131910751
 GameObject:
   m_ObjectHideFlags: 0
@@ -972,6 +987,7 @@ GameObject:
   - component: {fileID: 175837047}
   - component: {fileID: 175837046}
   - component: {fileID: 175837049}
+  - component: {fileID: 175837050}
   m_Layer: 5
   m_Name: AchievementsButton
   m_TagString: Untagged
@@ -1106,6 +1122,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hoverTextColor: {r: 1, g: 1, b: 1, a: 1}
+--- !u!114 &175837050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 175837044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92aa7a54635ab2b42a177264448755b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverSFXName: ButtonHover
+  clickSFXName: ButtonClick
 --- !u!1 &177840130
 GameObject:
   m_ObjectHideFlags: 0
@@ -1253,6 +1283,7 @@ GameObject:
   - component: {fileID: 200081554}
   - component: {fileID: 200081553}
   - component: {fileID: 200081556}
+  - component: {fileID: 200081557}
   m_Layer: 5
   m_Name: BackButton
   m_TagString: Untagged
@@ -1387,6 +1418,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hoverTextColor: {r: 1, g: 1, b: 1, a: 1}
+--- !u!114 &200081557
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 200081551}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92aa7a54635ab2b42a177264448755b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverSFXName: ButtonHover
+  clickSFXName: ButtonCancel
 --- !u!1 &208056144
 GameObject:
   m_ObjectHideFlags: 0
@@ -1609,6 +1654,7 @@ GameObject:
   - component: {fileID: 235064517}
   - component: {fileID: 235064516}
   - component: {fileID: 235064519}
+  - component: {fileID: 235064520}
   m_Layer: 5
   m_Name: HowToPlayButton
   m_TagString: Untagged
@@ -1743,6 +1789,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hoverTextColor: {r: 1, g: 1, b: 1, a: 1}
+--- !u!114 &235064520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 235064514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92aa7a54635ab2b42a177264448755b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverSFXName: ButtonHover
+  clickSFXName: ButtonClick
 --- !u!1 &249201526
 GameObject:
   m_ObjectHideFlags: 0
@@ -2483,6 +2543,7 @@ GameObject:
   - component: {fileID: 496392344}
   - component: {fileID: 496392343}
   - component: {fileID: 496392346}
+  - component: {fileID: 496392347}
   m_Layer: 5
   m_Name: QuitButton
   m_TagString: Untagged
@@ -2617,6 +2678,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hoverTextColor: {r: 1, g: 1, b: 1, a: 1}
+--- !u!114 &496392347
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 496392341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92aa7a54635ab2b42a177264448755b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverSFXName: ButtonHover
+  clickSFXName: ButtonClick
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -2748,6 +2823,7 @@ GameObject:
   - component: {fileID: 543925046}
   - component: {fileID: 543925045}
   - component: {fileID: 543925048}
+  - component: {fileID: 543925049}
   m_Layer: 5
   m_Name: ClearButton
   m_TagString: Untagged
@@ -2882,92 +2958,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hoverTextColor: {r: 1, g: 1, b: 1, a: 1}
---- !u!1 &550068406
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 550068407}
-  - component: {fileID: 550068408}
-  m_Layer: 0
-  m_Name: AudioManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &550068407
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 550068406}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &550068408
+--- !u!114 &543925049
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 550068406}
+  m_GameObject: {fileID: 543925043}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2df902f6b6e7ff4f919904b33ff7dd0, type: 3}
+  m_Script: {fileID: 11500000, guid: 92aa7a54635ab2b42a177264448755b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bgmMixer: {fileID: 5802316482864546721, guid: b344f9b7b2227db408116ba5b9a3e6d5, type: 2}
-  sfxMixer: {fileID: 4279340188021939522, guid: cd100e0035cd37440801fadbe7889377, type: 2}
-  sounds:
-  - name: Titlescreen
-    clip: {fileID: 8300000, guid: 9836b3ccd2557d347abc9da951e399bf, type: 3}
-    pitch: 1
-    loop: 1
-    source: {fileID: 0}
-  - name: Track1
-    clip: {fileID: 8300000, guid: 390a99ef74f970145b58ec016149b716, type: 3}
-    pitch: 1
-    loop: 1
-    source: {fileID: 0}
-  - name: Track2
-    clip: {fileID: 8300000, guid: c5a69bb8359997545a441a66c2f1aed0, type: 3}
-    pitch: 1
-    loop: 1
-    source: {fileID: 0}
-  - name: Track3
-    clip: {fileID: 8300000, guid: 4336228ab2ffa3340a5b48b1ddecacbf, type: 3}
-    pitch: 1
-    loop: 1
-    source: {fileID: 0}
-  - name: TrackAmongUs
-    clip: {fileID: 8300000, guid: 377a8fb8fc0786e44803f8a8d0eb8b36, type: 3}
-    pitch: 1
-    loop: 1
-    source: {fileID: 0}
-  - name: Pop1
-    clip: {fileID: 8300000, guid: 3c1cc73e2d388e44ea7cca8b6a286bc8, type: 3}
-    pitch: 1
-    loop: 0
-    source: {fileID: 0}
-  - name: Pop2
-    clip: {fileID: 8300000, guid: daa63ce10f5d6814d85f8a84469af8f9, type: 3}
-    pitch: 1
-    loop: 0
-    source: {fileID: 0}
-  - name: Pop3
-    clip: {fileID: 8300000, guid: aaab3a7dd10744f4f813ecf70c06b092, type: 3}
-    pitch: 1
-    loop: 0
-    source: {fileID: 0}
+  hoverSFXName: ButtonHover
+  clickSFXName: ButtonClick
 --- !u!1 &569737804
 GameObject:
   m_ObjectHideFlags: 0
@@ -3291,6 +3295,7 @@ GameObject:
   - component: {fileID: 586303230}
   - component: {fileID: 586303229}
   - component: {fileID: 586303232}
+  - component: {fileID: 586303233}
   m_Layer: 5
   m_Name: OkButton
   m_TagString: Untagged
@@ -3425,6 +3430,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hoverTextColor: {r: 1, g: 1, b: 1, a: 1}
+--- !u!114 &586303233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 586303227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92aa7a54635ab2b42a177264448755b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverSFXName: ButtonHover
+  clickSFXName: ButtonClick
 --- !u!1 &593825020
 GameObject:
   m_ObjectHideFlags: 0
@@ -4262,6 +4281,7 @@ GameObject:
   - component: {fileID: 895003790}
   - component: {fileID: 895003789}
   - component: {fileID: 895003792}
+  - component: {fileID: 895003793}
   m_Layer: 5
   m_Name: BackButton
   m_TagString: Untagged
@@ -4396,6 +4416,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hoverTextColor: {r: 1, g: 1, b: 1, a: 1}
+--- !u!114 &895003793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 895003787}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92aa7a54635ab2b42a177264448755b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverSFXName: ButtonHover
+  clickSFXName: ButtonCancel
 --- !u!1 &944136439
 GameObject:
   m_ObjectHideFlags: 0
@@ -4886,6 +4920,7 @@ GameObject:
   - component: {fileID: 1115657856}
   - component: {fileID: 1115657855}
   - component: {fileID: 1115657858}
+  - component: {fileID: 1115657859}
   m_Layer: 5
   m_Name: YesButton
   m_TagString: Untagged
@@ -5020,6 +5055,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hoverTextColor: {r: 1, g: 1, b: 1, a: 1}
+--- !u!114 &1115657859
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1115657853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92aa7a54635ab2b42a177264448755b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverSFXName: ButtonHover
+  clickSFXName: ButtonClick
 --- !u!1 &1136599377
 GameObject:
   m_ObjectHideFlags: 0
@@ -5565,6 +5614,7 @@ GameObject:
   - component: {fileID: 1460730104}
   - component: {fileID: 1460730103}
   - component: {fileID: 1460730106}
+  - component: {fileID: 1460730107}
   m_Layer: 5
   m_Name: NoButton
   m_TagString: Untagged
@@ -5699,6 +5749,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hoverTextColor: {r: 1, g: 1, b: 1, a: 1}
+--- !u!114 &1460730107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1460730101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92aa7a54635ab2b42a177264448755b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverSFXName: ButtonHover
+  clickSFXName: ButtonCancel
 --- !u!1 &1521925511
 GameObject:
   m_ObjectHideFlags: 0
@@ -5942,6 +6006,7 @@ GameObject:
   - component: {fileID: 1687733944}
   - component: {fileID: 1687733943}
   - component: {fileID: 1687733946}
+  - component: {fileID: 1687733947}
   m_Layer: 5
   m_Name: BackButton
   m_TagString: Untagged
@@ -6076,6 +6141,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hoverTextColor: {r: 1, g: 1, b: 1, a: 1}
+--- !u!114 &1687733947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1687733941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92aa7a54635ab2b42a177264448755b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverSFXName: ButtonHover
+  clickSFXName: ButtonCancel
 --- !u!1 &1713306955
 GameObject:
   m_ObjectHideFlags: 0
@@ -7425,6 +7504,63 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2136739220}
   m_CullTransparentMesh: 1
+--- !u!1001 &7094885807074206732
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 7094885807606400186, guid: d274e997355be60418a5821fe03d8e0c, type: 3}
+      propertyPath: m_Name
+      value: AudioManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 7094885807606400187, guid: d274e997355be60418a5821fe03d8e0c, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7094885807606400187, guid: d274e997355be60418a5821fe03d8e0c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7094885807606400187, guid: d274e997355be60418a5821fe03d8e0c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7094885807606400187, guid: d274e997355be60418a5821fe03d8e0c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7094885807606400187, guid: d274e997355be60418a5821fe03d8e0c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7094885807606400187, guid: d274e997355be60418a5821fe03d8e0c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7094885807606400187, guid: d274e997355be60418a5821fe03d8e0c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7094885807606400187, guid: d274e997355be60418a5821fe03d8e0c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7094885807606400187, guid: d274e997355be60418a5821fe03d8e0c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7094885807606400187, guid: d274e997355be60418a5821fe03d8e0c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7094885807606400187, guid: d274e997355be60418a5821fe03d8e0c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d274e997355be60418a5821fe03d8e0c, type: 3}
 --- !u!1001 &7263888144769133820
 PrefabInstance:
   m_ObjectHideFlags: 0

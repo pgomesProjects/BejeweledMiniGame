@@ -1,0 +1,108 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7094885807606400186
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7094885807606400187}
+  - component: {fileID: 7094885807606400180}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7094885807606400187
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7094885807606400186}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7094885807606400180
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7094885807606400186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2df902f6b6e7ff4f919904b33ff7dd0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bgmMixer: {fileID: 5802316482864546721, guid: b344f9b7b2227db408116ba5b9a3e6d5, type: 2}
+  sfxMixer: {fileID: 4279340188021939522, guid: cd100e0035cd37440801fadbe7889377, type: 2}
+  sounds:
+  - name: Titlescreen
+    clip: {fileID: 8300000, guid: 9836b3ccd2557d347abc9da951e399bf, type: 3}
+    pitch: 1
+    loop: 1
+    source: {fileID: 0}
+  - name: Track1
+    clip: {fileID: 8300000, guid: 390a99ef74f970145b58ec016149b716, type: 3}
+    pitch: 1
+    loop: 1
+    source: {fileID: 0}
+  - name: Track2
+    clip: {fileID: 8300000, guid: c5a69bb8359997545a441a66c2f1aed0, type: 3}
+    pitch: 1
+    loop: 1
+    source: {fileID: 0}
+  - name: Track3
+    clip: {fileID: 8300000, guid: 4336228ab2ffa3340a5b48b1ddecacbf, type: 3}
+    pitch: 1
+    loop: 1
+    source: {fileID: 0}
+  - name: TrackAmongUs
+    clip: {fileID: 8300000, guid: 377a8fb8fc0786e44803f8a8d0eb8b36, type: 3}
+    pitch: 1
+    loop: 1
+    source: {fileID: 0}
+  - name: MatchCancel
+    clip: {fileID: 8300000, guid: 4c52d8f6d5e7e544791d9b45214ae9ae, type: 3}
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Pop1
+    clip: {fileID: 8300000, guid: 3c1cc73e2d388e44ea7cca8b6a286bc8, type: 3}
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Pop2
+    clip: {fileID: 8300000, guid: daa63ce10f5d6814d85f8a84469af8f9, type: 3}
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Pop3
+    clip: {fileID: 8300000, guid: aaab3a7dd10744f4f813ecf70c06b092, type: 3}
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: ButtonHover
+    clip: {fileID: 8300000, guid: e587d3f2214fab849bd591f96e691c98, type: 3}
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: ButtonClick
+    clip: {fileID: 8300000, guid: 684ee6fb1f3d3f147969b6c95ee3e6a4, type: 3}
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: ButtonCancel
+    clip: {fileID: 8300000, guid: d0490376bc75bdc4883f5651bb891c0d, type: 3}
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
