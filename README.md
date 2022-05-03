@@ -76,3 +76,8 @@ Total Hours: 39.5
 > Added Chain Multiplier, Achievements Updated, Hover Board UI Bug Fixed, Swap Gem System Worked On
 
 Total Hours: 42.5
+
+**5/3/22**
+> Added How To Play Diagrams, Title Screen Animation, Worked On Itch Page and Report, Game Complete
+
+Total Hours: 46
