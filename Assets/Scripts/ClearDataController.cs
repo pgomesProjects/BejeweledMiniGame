@@ -20,8 +20,16 @@ public class ClearDataController : MonoBehaviour
 
     public void ClearData()
     {
+        float saveBGM = PlayerPrefs.GetFloat("BGMVolume");
+        float saveSFX = PlayerPrefs.GetFloat("SFXVolume");
+
         //Clear all PlayerPrefs
         PlayerPrefs.DeleteAll();
+
+        //Reset needed PlayerPrefs
+        PlayerPrefs.SetFloat("BGMVolume", saveBGM);
+        PlayerPrefs.SetFloat("SFXVolume", saveSFX);
+        PlayerPrefs.SetInt("FirstRun", 1);
 
         UpdatePersonalBestText();
         RefreshAchievementsPage();

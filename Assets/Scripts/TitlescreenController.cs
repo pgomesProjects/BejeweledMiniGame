@@ -29,10 +29,19 @@ public class TitlescreenController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //Default values on first run
+        if(PlayerPrefs.GetInt("FirstRun") == 0)
+        {
+            PlayerPrefs.SetFloat("BGMVolume", 0.5f);
+            PlayerPrefs.SetFloat("SFXVolume", 0.5f);
+            PlayerPrefs.SetInt("FirstRun", 1);
+        }
+
         personalBest.text = "Personal Best: " + PlayerPrefs.GetInt("PersonalBest");
-        FindObjectOfType<AudioManager>().Play("Titlescreen", PlayerPrefs.GetFloat("BGMVolume", 0.5f));
+        FindObjectOfType<AudioManager>().Play("Titlescreen", PlayerPrefs.GetFloat("BGMVolume"));
         currentMenuState = MenuState.TITLESCREEN;
 
+        Debug.Log("Volumes: " + PlayerPrefs.GetFloat("BGMVolume") + " | " + PlayerPrefs.GetFloat("SFXVolume"));
         volumeSliders[0].value = PlayerPrefs.GetFloat("BGMVolume") * 10;
         volumeSliders[1].value = PlayerPrefs.GetFloat("SFXVolume") * 10;
 
